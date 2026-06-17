@@ -92,54 +92,31 @@
       const gallery = document.getElementById('gallery');
 
       try {
-        const response = await fetch('img_data.txt');
-        if (!response.ok) throw new Error('img_data.txt를 불러오지 못했습니다.');
+        const response = await fetch('img_urls.txt');
+        if (!response.ok) throw new Error('img_urls.txt를 불러오지 못했습니다.');
         const text = await response.text();
-        
-        let currentSection = '';
-        const sections = [];
-        let currentImages = [];
+        const lines = text
+          .split(/\r?\n/)
+          .map(line => line.trim())
+          .filter(line => line && !line.startsWith('#'));
 
-        text.split(/\r?\n/).forEach(line => {
-          const trimmed = line.trim();
-          
-          if (trimmed.startsWith('#')) {
-            if (currentImages.length > 0) {
-              sections.push({ title: currentSection, images: currentImages });
-              currentImages = [];
-            }
-            currentSection = trimmed.replace(/^#\s*/, '');
-          } else if (trimmed && !trimmed.startsWith('#')) {
-            const parts = trimmed.split('|');
-            if (parts.length === 2) {
-              currentImages.push({
-                url: parts[0].trim(),
-                desc: parts[1].trim()
-              });
-            }
-          }
-        });
-
-        if (currentImages.length > 0) {
-          sections.push({ title: currentSection, images: currentImages });
-        }
-
-        if (!sections.length) {
-          status.textContent = '이미지 목록이 비어 있습니다. img_data.txt 파일을 확인하세요.';
+        if (!lines.length) {
+          status.textContent = '이미지 목록이 비어 있습니다. img_urls.txt 파일을 확인하세요.';
           return;
         }
 
-        gallery.innerHTML = sections.map(section => `
-          <div style="grid-column: 1 / -1; margin-top: 24px;">
-            <h2 style="margin: 0 0 16px 0; font-size: 1.4rem; color: #f5f5f5; border-bottom: 2px solid rgba(255,255,255,.2); padding-bottom: 12px;">${section.title}</h2>
-          </div>
-          ${section.images.map(img => `
+        gallery.innerHTML = lines.map(line => {
+          const [urlPart, titlePart] = line.split('|').map(part => part.trim());
+          const url = urlPart;
+          const title = titlePart || url.split('/').pop();
+
+          return `
             <article class="card">
-              <img loading="lazy" src="${img.url}" alt="${img.desc}" />
-              <div class="meta"><a href="${img.url}" target="_blank" rel="noreferrer">${img.desc}</a></div>
+              <img loading="lazy" src="${url}" alt="${title}" />
+              <div class="meta"><a href="${url}" target="_blank" rel="noreferrer">${title}</a></div>
             </article>
-          `).join('')}
-        `).join('');
+          `;
+        }).join('');
 
         status.remove();
       } catch (error) {
