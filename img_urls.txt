@@ -1,72 +1,83 @@
-https://vibe-coding-characters.vercel.app/img/env-e/invent.png
-https://vibe-coding-characters.vercel.app/img/env-e/invent2.png
-https://vibe-coding-characters.vercel.app/img/env-e/invent3.png
-https://vibe-coding-characters.vercel.app/img/env-e/lead1.png
-https://vibe-coding-characters.vercel.app/img/env-e/lead2.png
-https://vibe-coding-characters.vercel.app/img/env-e/lead3.png
-https://vibe-coding-characters.vercel.app/img/env-e/nature.png
-https://vibe-coding-characters.vercel.app/img/env-e/nature2.png
-https://vibe-coding-characters.vercel.app/img/env-e/nature3.png
-https://vibe-coding-characters.vercel.app/img/env-e/practice1.png
-https://vibe-coding-characters.vercel.app/img/env-e/practice2.png
-https://vibe-coding-characters.vercel.app/img/env-e/practice3.png
-https://vibe-coding-characters.vercel.app/img/env-m/action1.png
-https://vibe-coding-characters.vercel.app/img/env-m/action2.png
-https://vibe-coding-characters.vercel.app/img/env-m/action3.png
-https://vibe-coding-characters.vercel.app/img/env-m/coexist1.png
-https://vibe-coding-characters.vercel.app/img/env-m/coexist2.png
-https://vibe-coding-characters.vercel.app/img/env-m/coexist3.png
-https://vibe-coding-characters.vercel.app/img/env-m/social1.png
-https://vibe-coding-characters.vercel.app/img/env-m/social2.png
-https://vibe-coding-characters.vercel.app/img/env-m/social3.png
-https://vibe-coding-characters.vercel.app/img/env-m/tech1.png
-https://vibe-coding-characters.vercel.app/img/env-m/tech2.png
-https://vibe-coding-characters.vercel.app/img/env-m/tech3.png
-https://vibe-coding-characters.vercel.app/img/history_e/art.png
-https://vibe-coding-characters.vercel.app/img/history_e/art2.png
-https://vibe-coding-characters.vercel.app/img/history_e/art3.png
-https://vibe-coding-characters.vercel.app/img/history_e/care.png
-https://vibe-coding-characters.vercel.app/img/history_e/care2.png
-https://vibe-coding-characters.vercel.app/img/history_e/care3.png
-https://vibe-coding-characters.vercel.app/img/history_e/hero.png
-https://vibe-coding-characters.vercel.app/img/history_e/hero2.png
-https://vibe-coding-characters.vercel.app/img/history_e/hero3.png
-https://vibe-coding-characters.vercel.app/img/history_e/wisdom.png
-https://vibe-coding-characters.vercel.app/img/history_e/wisdom2.png
-https://vibe-coding-characters.vercel.app/img/history_e/wisdom3.png
-https://vibe-coding-characters.vercel.app/img/history-m/baekje1.png
-https://vibe-coding-characters.vercel.app/img/history-m/baekje2.png
-https://vibe-coding-characters.vercel.app/img/history-m/baekje3.png
-https://vibe-coding-characters.vercel.app/img/history-m/goguryeo1.png
-https://vibe-coding-characters.vercel.app/img/history-m/goguryeo2.png
-https://vibe-coding-characters.vercel.app/img/history-m/goguryeo3.png
-https://vibe-coding-characters.vercel.app/img/history-m/joseon1.png
-https://vibe-coding-characters.vercel.app/img/history-m/joseon2.png
-https://vibe-coding-characters.vercel.app/img/history-m/joseon3.png
-https://vibe-coding-characters.vercel.app/img/history-m/silla1.png
-https://vibe-coding-characters.vercel.app/img/history-m/silla2.png
-https://vibe-coding-characters.vercel.app/img/history-m/silla3.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar1.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar2.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar3.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama1.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama2.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama3.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood1.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood2.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood3.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop1.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop2.png
-https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop3.png
-https://vibe-coding-characters.vercel.app/img/travel-e/active.png
-https://vibe-coding-characters.vercel.app/img/travel-e/active2.png
-https://vibe-coding-characters.vercel.app/img/travel-e/active3.png
-https://vibe-coding-characters.vercel.app/img/travel-e/food.png
-https://vibe-coding-characters.vercel.app/img/travel-e/food2.png
-https://vibe-coding-characters.vercel.app/img/travel-e/food3.png
-https://vibe-coding-characters.vercel.app/img/travel-e/photo.png
-https://vibe-coding-characters.vercel.app/img/travel-e/photo2.png
-https://vibe-coding-characters.vercel.app/img/travel-e/photo3.png
-https://vibe-coding-characters.vercel.app/img/travel-e/plan.png
-https://vibe-coding-characters.vercel.app/img/travel-e/plan2.png
-https://vibe-coding-characters.vercel.app/img/travel-e/plan3.png
+# 초등 - 환경 (Elementary Environment)
+https://vibe-coding-characters.vercel.app/img/env-e/invent.png | 💡 아이디어 발명가 (Invent) 선정
+https://vibe-coding-characters.vercel.app/img/env-e/invent2.png | 💡 아이디어 발명가 (Invent) 2
+https://vibe-coding-characters.vercel.app/img/env-e/invent3.png | 💡 아이디어 발명가 (Invent) 3
+https://vibe-coding-characters.vercel.app/img/env-e/lead1.png | 🤝 변화 이끄미 (Lead) 선정
+https://vibe-coding-characters.vercel.app/img/env-e/lead2.png | 🤝 변화 이끄미 (Lead) 2
+https://vibe-coding-characters.vercel.app/img/env-e/lead3.png | 🤝 변화 이끄미 (Lead) 3
+https://vibe-coding-characters.vercel.app/img/env-e/nature.png | 🌳 자연 지킴이 (Nature) 선정
+https://vibe-coding-characters.vercel.app/img/env-e/nature2.png | 🌳 자연 지킴이 (Nature) 2
+https://vibe-coding-characters.vercel.app/img/env-e/nature3.png | 🌳 자연 지킴이 (Nature) 3
+https://vibe-coding-characters.vercel.app/img/env-e/practice1.png | 🌱 생활 실천가 (Practice) 선정
+https://vibe-coding-characters.vercel.app/img/env-e/practice2.png | 🌱 생활 실천가 (Practice) 2
+https://vibe-coding-characters.vercel.app/img/env-e/practice3.png  |🌱 생활 실천가 (Practice) 3
+
+# 중등 - 환경 (Middle School Environment)
+https://vibe-coding-characters.vercel.app/img/env-m/action1.png | ♻️ 생활 실천형 (Action) 선정
+https://vibe-coding-characters.vercel.app/img/env-m/action2.png | ♻️ 생활 실천형 (Action) 2
+https://vibe-coding-characters.vercel.app/img/env-m/action3.png | ♻️ 생활 실천형 (Action) 3
+https://vibe-coding-characters.vercel.app/img/env-m/coexist1.png | 🌏 자연 공존형 (Coexist) 선정
+https://vibe-coding-characters.vercel.app/img/env-m/coexist2.png | 🌏 자연 공존형 (Coexist) 2
+https://vibe-coding-characters.vercel.app/img/env-m/coexist3.png | 🌏 자연 공존형 (Coexist) 3
+https://vibe-coding-characters.vercel.app/img/env-m/social1.png | ⚖️ 사회 변화형 (Social) 선정
+https://vibe-coding-characters.vercel.app/img/env-m/social2.png | ⚖️ 사회 변화형 (Social) 2
+https://vibe-coding-characters.vercel.app/img/env-m/social3.png | ⚖️ 사회 변화형 (Social) 3
+https://vibe-coding-characters.vercel.app/img/env-m/tech1.png | 🚀 기술 혁신형 (Tech) 선정
+https://vibe-coding-characters.vercel.app/img/env-m/tech2.png | 🚀 기술 혁신형 (Tech) 2
+https://vibe-coding-characters.vercel.app/img/env-m/tech3.png | 🚀 기술 혁신형 (Tech) 3
+
+# 초등 - 역사 (Elementary History)
+https://vibe-coding-characters.vercel.app/img/history_e/art.png | 🎨 표현하는 예술형 (Art) 선정
+https://vibe-coding-characters.vercel.app/img/history_e/art2.png | 🎨 표현하는 예술형 (Art) 2
+https://vibe-coding-characters.vercel.app/img/history_e/art3.png | 🎨 표현하는 예술형 (Art) 3
+https://vibe-coding-characters.vercel.app/img/history_e/care.png | 🌿 배려하고 나누는 공존형 (Care) 선정
+https://vibe-coding-characters.vercel.app/img/history_e/care2.png | 🌿 배려하고 나누는 공존형 (Care) 2
+https://vibe-coding-characters.vercel.app/img/history_e/care3.png | 🌿 배려하고 나누는 공존형 (Care) 3
+https://vibe-coding-characters.vercel.app/img/history_e/hero.png | 🔥 나라 지킴이 영웅형 (Hero) 선정
+https://vibe-coding-characters.vercel.app/img/history_e/hero2.png | 🔥 나라 지킴이 영웅형 (Hero) 2
+https://vibe-coding-characters.vercel.app/img/history_e/hero3.png | 🔥 나라 지킴이 영웅형 (Hero) 3
+https://vibe-coding-characters.vercel.app/img/history_e/wisdom.png | 🧠 지혜로운 혁신형 (Wisdom) 선정
+https://vibe-coding-characters.vercel.app/img/history_e/wisdom2.png | 🧠 지혜로운 혁신형 (Wisdom) 2
+https://vibe-coding-characters.vercel.app/img/history_e/wisdom3.png | 🧠 지혜로운 혁신형 (Wisdom) 3
+
+# 중등 - 역사 (Middle School History)
+https://vibe-coding-characters.vercel.app/img/history-m/baekje1.png | ⛵ 백제 교류형 (Baekje) 선정
+https://vibe-coding-characters.vercel.app/img/history-m/baekje2.png | ⛵ 백제 교류형 (Baekje) 2
+https://vibe-coding-characters.vercel.app/img/history-m/baekje3.png | ⛵ 백제 교류형 (Baekje) 3
+https://vibe-coding-characters.vercel.app/img/history-m/goguryeo1.png | ⚔️ 고구려 모험형 (Goguryeo) 선정
+https://vibe-coding-characters.vercel.app/img/history-m/goguryeo2.png | ⚔️ 고구려 모험형 (Goguryeo) 2
+https://vibe-coding-characters.vercel.app/img/history-m/goguryeo3.png | ⚔️ 고구려 모험형 (Goguryeo) 3
+https://vibe-coding-characters.vercel.app/img/history-m/joseon1.png | 📚 조선 정돈형 (Joseon) 선정
+https://vibe-coding-characters.vercel.app/img/history-m/joseon2.png | 📚 조선 정돈형 (Joseon) 2
+https://vibe-coding-characters.vercel.app/img/history-m/joseon3.png | 📚 조선 정돈형 (Joseon) 3
+https://vibe-coding-characters.vercel.app/img/history-m/silla1.png | 👑 신라 상징형 (Silla) 선정
+https://vibe-coding-characters.vercel.app/img/history-m/silla2.png | 👑 신라 상징형 (Silla) 2
+https://vibe-coding-characters.vercel.app/img/history-m/silla3.png | 👑 신라 상징형 (Silla) 3
+
+# 중등 - 한국 콘텐츠 (Middle School Korean Content)
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar1.png | 🐰 K-캐릭터 몰입형 (KChar) 선정
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar2.png | 🐰 K-캐릭터 몰입형 (KChar) 2
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar3.png | 🐰 K-캐릭터 몰입형 (KChar) 3
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama1.png | 📺 K-드라마 공감형 (KDrama) 선정
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama2.png | 📺 K-드라마 공감형 (KDrama) 2
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama3.png | 📺 K-드라마 공감형 (KDrama) 3
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood1.png | 🍜 K-푸드 탐험형 (KFood) 선정
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood2.png | 🍜 K-푸드 탐험형 (KFood) 2
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood3.png | 🍜 K-푸드 탐험형 (KFood) 3
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop1.png | 🎤 K-POP 에너지형 (KPOP) 선정
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop2.png | 🎤 K-POP 에너지형 (KPOP) 2
+https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop3.png | 🎤 K-POP 에너지형 (KPOP) 3
+
+# 초등 - 여행 (Elementary Travel)
+https://vibe-coding-characters.vercel.app/img/travel-e/active.png | ⚡ 액티비티 러버형 (Active) 선정
+https://vibe-coding-characters.vercel.app/img/travel-e/active2.png | ⚡ 액티비티 러버형 (Active) 2
+https://vibe-coding-characters.vercel.app/img/travel-e/active3.png | ⚡ 액티비티 러버형 (Active) 3
+https://vibe-coding-characters.vercel.app/img/travel-e/food.png | 🍽️ 맛집 탐험형 (Food) 선정
+https://vibe-coding-characters.vercel.app/img/travel-e/food2.png | 🍽️ 맛집 탐험형 (Food) 2
+https://vibe-coding-characters.vercel.app/img/travel-e/food3.png | 🍽️ 맛집 탐험형 (Food) 3
+https://vibe-coding-characters.vercel.app/img/travel-e/photo.png | 📸 감성 기록형 (Photo) 선정
+https://vibe-coding-characters.vercel.app/img/travel-e/photo2.png | 📸 감성 기록형 (Photo) 2
+https://vibe-coding-characters.vercel.app/img/travel-e/photo3.png | 📸 감성 기록형 (Photo) 3
+https://vibe-coding-characters.vercel.app/img/travel-e/plan.png | 📅 일정 마스터형 (Plan) 선정
+https://vibe-coding-characters.vercel.app/img/travel-e/plan2.png | 📅 일정 마스터형 (Plan) 2
+https://vibe-coding-characters.vercel.app/img/travel-e/plan3.png | 📅 일정 마스터형 (Plan) 3

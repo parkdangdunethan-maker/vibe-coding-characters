@@ -106,9 +106,9 @@
         }
 
         gallery.innerHTML = lines.map(line => {
-          const [urlPart, titlePart] = line.split('|').map(part => part.trim());
-          const url = urlPart;
-          const title = titlePart || url.split('/').pop();
+          const separatorIndex = line.indexOf('|');
+          const url = separatorIndex >= 0 ? line.slice(0, separatorIndex).trim() : line;
+          const title = separatorIndex >= 0 ? line.slice(separatorIndex + 1).trim() : url.split('/').pop();
 
           return `
             <article class="card">
