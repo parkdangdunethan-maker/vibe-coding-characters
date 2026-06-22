@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 나의 Green Attitude 알아보기</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Gowun Dodum', sans-serif;
+            letter-spacing: -0.2px;
+        }
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+            word-break: keep-all;
+            line-height: 1.6;
+            background-color: #f4f7f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* 🚨 [카드 박스 절대 고정 규칙] 모든 화면에서 완벽하게 단 하나의 크기만 고정적으로 유지 */
+        .app-card {
+            width: 100%;
+            max-width: 420px;
+            height: 580px;                  /* 🚨 모든 화면 동일 고정 */
+            padding: 24px 20px;              /* 🚨 모든 화면 동일 고정 */
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            margin: 0 auto;
+            background: #ffffff;
+            position: relative;              /* 내부 요소 및 이전 버튼 정렬 기준 */
+            overflow-x: hidden;              /* 🚨 가로 스크롤 무조건 차단 */
+            overflow-y: auto;
+            scrollbar-width: none;           /* Firefox 스크롤바 바 숨김 */
+            display: flex;                   /* 내부 화면 flex 레이아웃 구조 */
+            flex-direction: column;
+        }
+        .app-card::-webkit-scrollbar {
+            display: none;                   /* Chrome, Safari 스크롤바 숨김 */
+        }
+
+        /* 🚨 [flex 레이아웃] 화면별 공통 베이스 설정 */
+        #start-screen, #question-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+            justify-content: flex-start;     /* 위에서부터 자연스럽게 정렬 */
+            flex-shrink: 0;
+        }
+
+        /* 🚨 [3단계 신규 화면 CSS] 분석중 로딩 및 캐릭터 인트로는 정중앙 배치 */
+        #loading-screen, #character-intro {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;         /* 🚨 정중앙 정렬 */
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* [Step 1] 분석중 글자 크기 및 애니메이션 */
+        .loading-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        /* [Step 2] 캐릭터 인트로 텍스트 연출 스타일 */
+        .intro-intro-text {
+            font-size: 18px;
+            color: #7f8c8d;
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+        }
+        .intro-type-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a3a2a;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* 인트로용 캐릭터 이미지 베이스 디자인 (최초 300px 크기) */
+        .intro-char-img {
+            width: 300px;
+            max-width: 100%;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 10px;
+        }
+
+        /* 시퀀스 제어 활성화 클래스 */
+        .intro-active .intro-intro-text { opacity: 1; }
+        .intro-active .intro-type-text { opacity: 1; transform: translateY(0); }
+        .intro-active .intro-char-img { opacity: 1; transform: scale(1.0); }
+
+        /* Step 3: 인트로 전체 화면 페이드 아웃 아웃 시퀀스용 스타일 */
+        .intro-fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+
+        /* 🚨 [버튼 뭉개짐 방지 규칙] 메인 버튼 축소 및 찌그러짐 현상 방지 고정 */
+        .main-btn {
+            width: 100%;
+            min-height: 52px;                /* 🚨 height 대신 min-height 사용 */
+            flex-shrink: 0;                  /* 🚨 절대 줄어들지 않게 */
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: auto;                /* 🚨 카드 하단에 자연스럽게 정착 */
+            border: none;
+            background-color: #2ecc71;
+            color: #ffffff;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        /* [필수 인터랙션 ⑦] 버튼 hover 시 scale 및 box-shadow 강화 효과 */
+        .main-btn:hover {
+            background-color: #27ae60;
+            transform: scale(1.02);           /* 카드 바깥 영역을 크게 넘지 않는 범위 */
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+        .main-btn:active {
+            transform: scale(1.0);
+        }
+
+        /* 상단 바 및 화살표 버튼 인터페이스 */
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            height: 36px;
+            margin-bottom: 5px;
+        }
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #e5e5e5;
+            background: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;                  /* 이전 화살표 고정 크기 유지 */
+            transition: background-color 0.2s;
+        }
+        .back-btn:hover { background-color: #f9f9f9; }
+        
+        /* [필수 인터랙션 ⑥] 진행률 바 트랜지션 효과 적용 */
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 8px;
+            background-color: #eef2ef;
+            border-radius: 4px;
+            margin-left: 12px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 20%;
+            background-color: #2ecc71;
+            border-radius: 4px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 진행바 0.4초 연출 지정 */
+        }
+        .progress-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        /* 시작 화면 타이틀 및 폰트 배치 */
+        .title-area {
+            text-align: center;
+            padding: 40px 0 20px 0;
+        }
+        .title-area h1 {
+            font-size: 24px;
+            color: #1a3a2a;
+            margin: 0 0 16px 0;
+        }
+        .title-area p {
+            font-size: 14px;
+            color: #556b2f;
+            margin: 0;
+        }
+
+        /* 질문지 텍스트 레이아웃 */
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;                       /* 🚨 선택지끼리 겹치지 않게 간격 필수 유지 */
+            position: relative;
+        }
+        
+        /* 선택지 카드 및 [필수 인터랙션 ⑤] Ripple 물결 효과 베이스 설정 */
+        .option-card {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e5e5e5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #34495e;
+            transition: border-color 0.2s, background-color 0.2s;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;                /* 물결이 밖으로 나가지 못하게 통제 */
+        }
+        .option-card input[type="radio"] {
+            margin: 0;
+            cursor: pointer;
+            accent-color: #2ecc71;
+            position: relative;
+            z-index: 2;                      /* 물결 효과 위로 배치 */
+        }
+        .option-text-span {
+            position: relative;
+            z-index: 2;
+        }
+        .option-card.selected {
+            border-color: #2ecc71;
+            background-color: #ebfaef;
+            font-weight: bold;
+        }
+
+        /* Ripple 효과 구체적 원형 확산 구현 */
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(46, 204, 113, 0.25);
+            transform: scale(0);
+            animation: ripple-animation 0.5s linear; /* 클릭 좌표 기준 0.5초 확산 */
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* 🚨 [Step 4] 최종 결과 화면 구조 레이아웃 정의 */
+        #result-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            gap: 12px;                       /* 580px 컴팩트 구성을 위한 요소 간 간격 고정 */
+            overflow-y: auto;                /* 콘텐츠 과다 시 하단부 독립 스크롤 허용 */
+            scrollbar-width: none;
+            overflow-x: hidden;              /* 🚨 어떤 상황에서도 가로 스크롤 완전 차단 */
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        #result-screen.fade-in {
+            opacity: 1;
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        /* ① 캐릭터 안착 이미지 스타일 및 [필수 인터랙션 ②] 대형 흔들림 애니메이션 효과 */
+        .final-char-wrapper {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 130px;
+        }
+        .final-char-img {
+            width: 130px;                    /* 🚨 최종 정착 화면에서는 130px 규격 고정 */
+            max-width: 130px;
+            height: auto;
+            margin: 0 auto;
+            animation: wobbleBig 1.8s ease-in-out infinite; /* 무한 루프 idle 흔들림 구현 */
+        }
+        /* Fallback 예외 처리 대형 이모지 텍스트 박스 */
+        .fallback-emoji-display {
+            font-size: 80px;
+            line-height: 1.2;
+            animation: wobbleBig 1.8s ease-in-out infinite;
+        }
+
+        @keyframes wobbleBig {
+            0%, 100% { transform: rotate(-10deg) scale(1); }
+            25%      { transform: rotate(8deg) scale(1.08); }
+            50%      { transform: rotate(-8deg) scale(0.96); }
+            75%      { transform: rotate(10deg) scale(1.08); }
+        }
+
+        /* ② 유형명 (28px bold 및 중앙 정렬) */
+        .result-type {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            color: #1a3a2a;
+            margin: 0;
+        }
+
+        /* ③ [3단계 신규 추가] 분석 멘트 박스 스타일 */
+        .result-comment-box {
+            background-color: #f5f6fa;
+            border: 1px solid #dcdde1;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2f3640;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* ④ 어떤 성향일까? (회색 박스 포맷) */
+        .result-description-box {
+            background-color: #f1f2f6;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #57606f;
+        }
+
+        /* ⑤ 💡 실천제안 [필수 인터랙션 ③] 강조 등장 애니메이션 스케일 업 + 자체 발광 발송 효과 */
+        .result-suggestion-box {
+            background-color: #fff9db;
+            border: 2px dashed #f1c40f;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #d35400;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .animate-suggestion {
+            animation: suggestionGlow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes suggestionGlow {
+            to {
+                opacity: 1;
+                transform: scale(1.0);
+                box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+            }
+        }
+
+        /* [필수 인터랙션 ④] 정보 카드 순차 등장 지연 기법을 위한 기본 투명화 처리 */
+        .stagger-card {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .stagger-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 유틸리티 디스플레이 제어 스위치 */
+        .hidden { display: none !important; }
+
+        /* 하단 카피라이트 공간 */
+        footer {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #bdc3c7;
+            text-align: center;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+
+        <div id="start-screen">
+            <div class="title-area">
+                <h1>🌿 나의 Green Attitude 알아보기</h1>
+                <p>내가 생각하는 가장 중요한 환경 가치와 태도는 무엇일까요? 아래의 질문에 답하고 나의 환경 실천 성향을 알아보아요!</p>
+            </div>
+            <button class="main-btn" onclick="startQuiz()">🚀 나의 환경 실천 성향 알아보기</button>
+        </div>
+
+        <div id="question-screen" class="hidden">
+            <div class="progress-header">
+                <button type="button" id="prevBtn" class="back-btn" onclick="prevQuestion()">←</button>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <span id="progressText" class="progress-text">1/5</span>
+            </div>
+
+            <form id="quizForm" onsubmit="return false;">
+                <div class="quiz-group" id="group1">
+                    <div class="question-text">Q1. 학교에서 환경 프로젝트를 진행한다면 가장 효과적이라고 생각하는 것은?</div>
+                    <div class="options">
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q1" value="1" onclick="selectOption(this)"><span class="option-text-span">① 일회용품 사용을 줄이는 생활 실천 캠페인</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q1" value="2" onclick="selectOption(this)"><span class="option-text-span">② 학생들과 함께 교내 환경 규칙을 만들고 실천하기</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q1" value="3" onclick="selectOption(this)"><span class="option-text-span">③ AI 기술을 활용한 친환경 관리 시스템 도입</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q1" value="4" onclick="selectOption(this)"><span class="option-text-span">④ 학교 주변 자연 생태를 보전하고 복원하는 활동</span></label>
+                    </div>
+                </div>
+
+                <div class="quiz-group hidden" id="group2">
+                    <div class="question-text">Q2. 기후 변화 뉴스를 봤을 때 가장 먼저 드는 생각은?</div>
+                    <div class="options">
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q2" value="1" onclick="selectOption(this)"><span class="option-text-span">① 나부터 생활 습관을 바꿔야겠다</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q2" value="2" onclick="selectOption(this)"><span class="option-text-span">② 사회 전체의 협력과 책임이 중요하다</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q2" value="3" onclick="selectOption(this)"><span class="option-text-span">③ 새로운 친환경 기술 개발이 필요하다</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q2" value="4" onclick="selectOption(this)"><span class="option-text-span">④ 자연과 생태계가 더 이상 훼손되지 않아야 한다</span></label>
+                    </div>
+                </div>
+
+                <div class="quiz-group hidden" id="group3">
+                    <div class="question-text">Q3. 물건이나 제품을 고를 때 가장 중요하게 보는 것은?</div>
+                    <div class="options">
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q3" value="1" onclick="selectOption(this)"><span class="option-text-span">① 실제로 꾸준히 사용할 수 있는가</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q3" value="2" onclick="selectOption(this)"><span class="option-text-span">② 사회적으로 환경 보호에 노력하는 기업인가</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q3" value="3" onclick="selectOption(this)"><span class="option-text-span">③ 최신 친환경 기술이 적용되었는가</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q3" value="4" onclick="selectOption(this)"><span class="option-text-span">④ 자연과 환경에 미치는 영향이 적은 방식으로 만들어졌는가</span></label>
+                    </div>
+                </div>
+
+                <div class="quiz-group hidden" id="group4">
+                    <div class="question-text">Q4. 우리 지역에 가장 필요하다고 생각하는 환경 정책은?</div>
+                    <div class="options">
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q4" value="1" onclick="selectOption(this)"><span class="option-text-span">① 시민 참여형 분리배출 보상 제도</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q4" value="2" onclick="selectOption(this)"><span class="option-text-span">② 플라스틱 사용 줄이기, 차량 제한 등 공동체 환경 규칙</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q4" value="3" onclick="selectOption(this)"><span class="option-text-span">③ 스마트 친환경 도시 시스템 구축 및 확대</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q4" value="4" onclick="selectOption(this)"><span class="option-text-span">④ 도심 숲, 하천 등 생태 공간 확대</span></label>
+                    </div>
+                </div>
+
+                <div class="quiz-group hidden" id="group5">
+                    <div class="question-text">Q5. 미래 환경 문제 해결의 핵심은 무엇이라고 생각하는가?</div>
+                    <div class="options">
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q5" value="1" onclick="selectOption(this)"><span class="option-text-span">① 개인의 꾸준한 실천</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q5" value="2" onclick="selectOption(this)"><span class="option-text-span">② 사회 전체의 협력과 제도적 변화</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q5" value="3" onclick="selectOption(this)"><span class="option-text-span">③ 과학기술 혁신과 새로운 발명</span></label>
+                        <label class="option-card" onclick="triggerRipple(event)"><input type="radio" name="q5" value="4" onclick="selectOption(this)"><span class="option-text-span">④ 자연과 공존하려는 태도와 철학</span></label>
+                    </div>
+                </div>
+            </form>
+
+            <button id="nextBtn" class="main-btn" onclick="nextQuestion()">다음 질문으로 ➡️</button>
+        </div>
+
+        <div id="loading-screen" class="hidden">
+            <div id="loadingText" class="loading-text">분석중.</div>
+        </div>
+
+        <div id="character-intro" class="hidden">
+            <div class="intro-intro-text">당신은...</div>
+            <div id="introTypeName" class="intro-type-text">유형명 추출중!</div>
+            <img id="introCharImg" class="intro-char-img" src="" alt="character">
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h4 class="result-title">📊 나의 환경 실천 성향 결과</h4>
+            
+            <div class="final-char-wrapper stagger-card">
+                <img id="finalCharImg" class="final-char-img" src="" alt="character" onerror="handleImageError()">
+                <div id="fallbackEmoji" class="fallback-emoji-display hidden"></div>
+            </div>
+
+            <h3 id="resultType" class="result-type stagger-card"></h3>
+            
+            <div id="resultComment" class="result-comment-box stagger-card"></div>
+
+            <div class="result-description-box stagger-card">
+                <strong>어떤 성향일까?:</strong> <span id="resultDescription"></span>
+            </div>
+
+            <div id="resultSuggestion" class="result-suggestion-box">
+                <strong>💡 실천제안:</strong> <span id="suggestionContent"></span>
+            </div>
+
+            <button class="main-btn" onclick="resetQuiz()">🔄 다시 하기</button>
+        </div>
+
+    </div>
+
+    <footer>AI의 도움을 받아 제작된 콘텐츠입니다.</footer>
+
+
+    <script>
+        let currentIdx = 1;
+        let loadingInterval = null;
+
+        /* [1단계 소스 원본 데이터 배열 보존 및 락킹] */
+        const SUGGESTIONS = {
+          "A": [
+            "등하굣길에 보이는 작은 쓰레기를 줍는 '플로깅'에 도전해 보세요!",
+            "일주일에 하루는 '플라스틱 없는 날'을 정해 실천해 보세요!",
+            "장바구니와 텀블러를 가방에 항상 챙겨 다니는 습관을 만들어 보세요!",
+            "우리 집에서 가장 많이 버리는 쓰레기 1가지를 줄이는 도전을 시작해 보세요!",
+            "사용하지 않는 콘센트는 뽑고, 안 쓰는 불은 끄는 '에너지 절약 챔피언'이 되어 보세요!",
+          ],
+          "B": [
+            "교내 환경 규칙 만들기나 캠페인 조직 등 공동체의 규칙을 바꾸는 환경 리더로 성장해 보세요!",
+            "친구들과 함께 '교내 환경 동아리'를 만들어 정기 활동을 기획해 보세요!",
+            "학교에 필요한 환경 정책을 제안하는 학생회 캠페인에 참여해 보세요!",
+            "SNS로 환경 이슈를 알리는 '디지털 환경 운동가'에 도전해 보세요!",
+            "우리 학교의 일회용품 사용 규칙을 함께 만들어 학생회에 제안해 보세요!",
+          ],
+          "C": [
+            "AI로 우리 동네 미세먼지·소음 데이터를 분석하는 미니 프로젝트를 시도해 보세요!",
+            "친환경 발명 아이디어 공모전이나 메이커 페어에 도전해 보세요!",
+            "스마트 식물 키트나 IoT 환경 센서를 만들어 보는 메이커 활동에 도전해 보세요!",
+            "친환경 신기술(전기차·태양광 등)을 조사해 친구들 앞에서 발표해 보세요!",
+            "환경 문제를 다루는 코딩 챌린지나 해커톤에 참여해 보세요!",
+          ],
+          "D": [
+            "자연을 주제로 한 글이나 그림을 SNS·블로그에 공유해 따뜻한 메시지를 전해 보세요!",
+            "학교 텃밭이나 베란다 정원을 가꾸며 작은 생명을 직접 길러 보세요!",
+            "환경 다큐멘터리를 본 후 친구들과 함께 이야기 나누는 '에코 토크 데이'를 열어 보세요!",
+            "멸종 위기 동물에 대해 깊이 조사하고 보호 캠페인에 동참해 보세요!",
+            "가까운 국립공원이나 생태 체험관을 방문해 자연을 직접 느껴 보세요!",
+          ],
+        };
+
+        function getRandomSuggestion(type) {
+          const list = SUGGESTIONS[type];
+          const idx = Math.floor(Math.random() * list.length);
+          return list[idx];
+        }
+
+        // 캐릭터 리소스 연결 정보 테이블
+        const CHAR_IMAGES = {
+            "A": "https://vibe-coding-characters.vercel.app/img/env-m/action1.png",
+            "B": "https://vibe-coding-characters.vercel.app/img/env-m/social1.png",
+            "C": "https://vibe-coding-characters.vercel.app/img/env-m/tech1.png",
+            "D": "https://vibe-coding-characters.vercel.app/img/env-m/coexist1.png"
+        };
+
+        // 폴백 이모지 매핑 데이터 규칙 정의
+        const FALLBACK_EMOJIS = { "A": "🌱", "B": "🤝", "C": "💡", "D": "🌳" };
+
+        // 폭죽 파티클 분사 컬러 코드셋 정의
+        const CONFETTI_COLORS = {
+            "A": ["#A8E063", "#56AB2F"],
+            "B": ["#FFB88C", "#DE6262"],
+            "C": ["#B993D6", "#8CA6DB"],
+            "D": ["#74EBD5", "#9FACE6"]
+        };
+
+        // 결과 정적 문구 패널 정보 객체
+        const TYPE_DETAILS = {
+            "A": { name: "A. 생활 실천형", desc: "지금 당장 할 수 있는 행동을 중요하게 생각하는 유형" },
+            "B": { name: "B. 사회 변화형", desc: "법·제도·사회적 협력이 중요하다고 생각하는 유형" },
+            "C": { name: "C. 기술 혁신형", desc: "과학기술과 아이디어를 통해 환경 문제 해결 방법을 찾는 유형" },
+            "D": { name: "D. 자연 공존형", desc: "인간과 자연이 함께 살아가는 방식을 중요하게 생각하는 유형" }
+        };
+
+        /* 외부 라이브러리 연동 표준 폭죽 연출 함수 */
+        function safeConfetti(opts) {
+            if (typeof confetti === 'undefined') return;
+            try { confetti(opts); } catch (e) {}
+        }
+
+        function fireEmojiConfetti(emoji, colors) {
+            if (typeof confetti === 'undefined') return;
+            try {
+                const shape = confetti.shapeFromText({ text: emoji, scalar: 4 });
+                const baseOption = {
+                    particleCount: 60, spread: 90, startVelocity: 55, ticks: 250,
+                    shapes: [shape], scalar: 4, colors: colors, gravity: 0.8, drift: 0.1
+                };
+                confetti({ ...baseOption, origin: { x: 0.1, y: 0.9 }, angle: 60 });
+                confetti({ ...baseOption, origin: { x: 0.9, y: 0.9 }, angle: 120 });
+                setTimeout(() => {
+                    confetti({ ...baseOption, particleCount: 40, origin: { x: 0.5, y: 0.8 }, angle: 90, spread: 120 });
+                }, 300);
+            } catch (e) {}
+        }
+
+        /* [필수 인터랙션 ⑤] 선택 카드 Ripple 클릭 잔물결 효과 연출부 */
+        function triggerRipple(event) {
+            const card = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(card.clientWidth, card.clientHeight);
+            const radius = diameter / 2;
+
+            const rect = card.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple-effect");
+
+            // 기존 잔물결 제거 후 추가
+            const prevRipple = card.querySelector(".ripple-effect");
+            if (prevRipple) prevRipple.remove();
+
+            card.appendChild(circle);
+        }
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('question-screen').classList.remove('hidden');
+            currentIdx = 1;
+            renderStep();
+        }
+
+        function selectOption(input) {
+            const container = input.closest('.options');
+            container.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            input.closest('.option-card').classList.add('selected');
+        }
+
+        function renderStep() {
+            for(let i=1; i<=5; i++) {
+                document.getElementById(`group${i}`).classList.add('hidden');
+            }
+            document.getElementById(`group${currentIdx}`).classList.remove('hidden');
+
+            const prevBtn = document.getElementById('prevBtn');
+            prevBtn.style.visibility = (currentIdx === 1) ? 'hidden' : 'visible';
+
+            // 0.4초 지정 트랜지션 바 넓이 반영
+            document.getElementById('progressBar').style.width = `${currentIdx * 20}%`;
+            document.getElementById('progressText').textContent = `${currentIdx}/5`;
+
+            const nextBtn = document.getElementById('nextBtn');
+            if(currentIdx === 5) {
+                nextBtn.textContent = '📊 나의 환경 실천 성향 알아보기';
+            } else {
+                nextBtn.textContent = '다음 질문으로 ➡️';
+            }
+        }
+
+        function prevQuestion() {
+            if(currentIdx > 1) {
+                currentIdx--;
+                renderStep();
+            }
+        }
+
+        function nextQuestion() {
+            const checkedOption = document.querySelector(`input[name="q${currentIdx}"]:checked`);
+            if (!checkedOption) {
+                alert("답변을 선택해 주세요.");
+                return;
+            }
+
+            if(currentIdx < 5) {
+                currentIdx++;
+                renderStep();
+            } else {
+                runAnalysisSequence(); // 3단계 통합 고성능 타임라인 연출 함수 구동
+            }
+        }
+
+        /* 이미지 에러 발생 시 자동 발동하는 Fallback 구조체 처리 */
+        function handleImageError() {
+            document.getElementById('finalCharImg').classList.add('hidden');
+            document.getElementById('fallbackEmoji').classList.remove('hidden');
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           [3단계 핵심: 스펙타클 연출 시퀀스 타임라인 파이프라인]
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        function runAnalysisSequence() {
+            // 질문 화면 무대 뒤로 퇴장
+            document.getElementById('question-screen').classList.add('hidden');
+            
+            /* ──────────────────────────────────────────
+               [Step 1] 분석 중 로딩 시퀀스 작동 (0.0s ~ 1.5s)
+               ────────────────────────────────────────── */
+            const loadingScreen = document.getElementById('loading-screen');
+            const loadingText = document.getElementById('loadingText');
+            loadingScreen.classList.remove('hidden');
+            
+            let dotCount = 1;
+            loadingInterval = setInterval(() => {
+                dotCount = (dotCount % 3) + 1;
+                loadingText.textContent = "분석중" + ".".repeat(dotCount);
+            }, 400);
+
+            // 점수 및 순위 연산 사전 실시
+            const resultPayload = evaluateScores();
+
+            // 1.5초 타이머 세팅 후 Step 2 연결
+            setTimeout(() => {
+                clearInterval(loadingInterval);
+                loadingScreen.classList.add('hidden');
+                
+                /* ──────────────────────────────────────────
+                   [Step 2] 캐릭터 인트로 쇼타임 전개 (1.5s ~ 3.5s)
+                   ────────────────────────────────────────── */
+                const introScreen = document.getElementById('character-intro');
+                
+                // 데이터 선주입
+                document.getElementById('introTypeName').textContent = resultPayload.detail.name + "!";
+                document.getElementById('introCharImg').src = CHAR_IMAGES[resultPayload.highestType];
+                
+                introScreen.classList.remove('hidden');
+
+                // 1.5s 시점: "당신은..." 페이드인 즉시 수행
+                setTimeout(() => {
+                    introScreen.classList.add('intro-active');
+                }, 50);
+
+                // 2.7s 시점 (등장 0.6초 후): 융단폭격식 테마 폭죽 분사
+                setTimeout(() => {
+                    fireEmojiConfetti(FALLBACK_EMOJIS[resultPayload.highestType], CONFETTI_COLORS[resultPayload.highestType]);
+                }, 1200);
+
+                /* ──────────────────────────────────────────
+                   [Step 3 & 4] 페이드아웃 및 결과 화면 정착 안착식 (3.5s ~)
+                   ────────────────────────────────────────── */
+                setTimeout(() => {
+                    // 인트로 아웃 트랜지션 작동
+                    introScreen.classList.add('intro-fade-out');
+                    
+                    setTimeout(() => {
+                        introScreen.classList.add('hidden');
+                        introScreen.classList.remove('intro-active', 'intro-fade-out');
+                        
+                        // 결과 뷰포트 데이터 최종 매핑
+                        renderFinalResultView(resultPayload);
+                    }, 800); // 0.8초 페이드아웃 소요 시간 충족
+
+                }, 2000); // 인트로 머무름 타임 유지
+
+            }, 1500);
+        }
+
+        /* 1단계 고정 규칙 기반 점수 밸런싱 및 등수 산출 코어 */
+        function evaluateScores() {
+            const form = document.getElementById('quizForm');
+            let scores = { "A": 0, "B": 0, "C": 0, "D": 0 };
+            
+            for (let i = 1; i <= 5; i++) {
+                const value = form.querySelector(`input[name="q${i}"]:checked`).value;
+                if (value === "1") { scores["A"] += 2; scores["D"] += 1; }
+                else if (value === "2") { scores["B"] += 2; scores["A"] += 1; }
+                else if (value === "3") { scores["C"] += 2; scores["B"] += 1; }
+                else if (value === "4") { scores["D"] += 2; scores["C"] += 1; }
+            }
+
+            // 동점 우선 처리를 고려한 정렬 맵 구조 구성
+            const typesOrder = ["A", "B", "C", "D"];
+            
+            // 점수순 정렬을 위한 가상 어레이화
+            let sortedList = typesOrder.map(t => ({ type: t, score: scores[t] }));
+            
+            // 최고점 서치 알고리즘 (동점 시 순서 상 먼저 도달한 유형이 최우선권 유지)
+            let highestType = "A";
+            let maxScore = scores["A"];
+            for (let i = 1; i < typesOrder.length; i++) {
+                if (scores[typesOrder[i]] > maxScore) {
+                    maxScore = scores[typesOrder[i]];
+                    highestType = typesOrder[i];
+                }
+            }
+
+            // 1위 대상 및 2위 스코어 추출을 위한 내림차순 정렬 연산 처리
+            // 자바스크립트의 sort는 안정 정렬이 아니므로 동점 시 원본 인덱스를 보존하도록 처리
+            let ranking = [...sortedList].sort((x, y) => {
+                if(y.score === x.score) {
+                    return typesOrder.indexOf(x.type) - typesOrder.indexOf(y.type);
+                }
+                return y.score - x.score;
+            });
+
+            let firstPlace = ranking[0];
+            let secondPlace = ranking[1];
+            let gap = firstPlace.score - secondPlace.score;
+
+            // 3단계 핵심: 점수 격차에 따른 고유 조건식 분석 멘트 생성부
+            let comment = "";
+            let typeNameText = TYPE_DETAILS[highestType].name;
+
+            if (gap >= 3) {
+                comment = `당신은 확실한 [${typeNameText}]이에요!<br>이 성향이 강하게 나타났어요.`;
+            } else if (gap >= 1 && gap <= 2) {
+                comment = `당신은 [${typeNameText}] 성향이 가장 두드러지지만,<br>다른 면도 함께 가지고 있어요.`;
+            } else {
+                comment = `당신은 여러 매력을 함께 가진 균형형이에요.<br>그중에서도 [${typeNameText}] 성향이 살짝 더 강해요.`;
+            }
+
+            return {
+                highestType: highestType,
+                detail: TYPE_DETAILS[highestType],
+                comment: comment
+            };
+        }
+
+        /* 최종화면 렌더링 및 컴포넌트 Stagger 페이드 인 제어식 */
+        function renderFinalResultView(payload) {
+            const resultScreen = document.getElementById('result-screen');
+            
+            // 기본 리소스 주입 상태 초기화
+            document.getElementById('finalCharImg').classList.remove('hidden');
+            document.getElementById('finalCharImg').src = CHAR_IMAGES[payload.highestType];
+            document.getElementById('fallbackEmoji').textContent = FALLBACK_EMOJIS[payload.highestType];
+            document.getElementById('fallbackEmoji').classList.add('hidden');
+
+            document.getElementById('resultType').textContent = payload.detail.name;
+            document.getElementById('resultComment').innerHTML = payload.comment;
+            document.getElementById('resultDescription').innerHTML = ` ${payload.detail.desc}`;
+            
+            // 고정 요구에 맞게 getRandomSuggestion 호출값 주입
+            document.getElementById('suggestionContent').textContent = getRandomSuggestion(payload.highestType);
+
+            // 초기화 후 화면 가시화
+            resultScreen.querySelectorAll('.stagger-card').forEach(c => c.classList.remove('show'));
+            document.getElementById('resultSuggestion').classList.remove('animate-suggestion');
+            
+            resultScreen.classList.remove('hidden');
+            
+            // 리플로우 유도 후 트랜지션 클래스 부여
+            setTimeout(() => {
+                resultScreen.classList.add('fade-in');
+                
+                /* [필수 인터랙션 ④] 정보 카드 계단식 Stagger 등장 연출 (0.15s 인터벌) */
+                resultScreen.querySelectorAll('.stagger-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('show');
+                    }, index * 150);
+                });
+
+                /* [필수 인터랙션 ③] 실천 제안 하이라이트 박스 글로우 스케일 애니메이션 별도 기동 */
+                setTimeout(() => {
+                    document.getElementById('resultSuggestion').classList.add('animate-suggestion');
+                }, 600);
+
+            }, 50);
+        }
+
+        /* 새고고침 없는 완벽 내부 인스턴스 정보 초기화 함수 */
+        function resetQuiz() {
+            const resultScreen = document.getElementById('result-screen');
+            resultScreen.classList.remove('fade-in');
+            
+            setTimeout(() => {
+                resultScreen.classList.add('hidden');
+                document.getElementById('quizForm').reset();
+                
+                // 선택 체크 클래스 소거
+                document.querySelectorAll('.option-card').forEach(card => {
+                    card.classList.remove('selected');
+                    const rip = card.querySelector(".ripple-effect");
+                    if(rip) rip.remove();
+                });
+
+                currentIdx = 1;
+                document.getElementById('start-screen').classList.remove('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
