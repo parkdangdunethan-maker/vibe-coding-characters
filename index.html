@@ -1,26 +1,194 @@
-<script>
-  async function loadGallery() {
-    const status = document.getElementById("status");
-    const gallery = document.getElementById("gallery");
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>바이브 코딩 캐릭터</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #f5f5f5;
+      }
+      header {
+        padding: 24px 16px;
+        text-align: center;
+        background: #1b1b1b;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      }
+      header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        letter-spacing: -0.03em;
+      }
+      header p {
+        margin: 8px auto 0;
+        max-width: 720px;
+        color: #aaa;
+        line-height: 1.6;
+      }
+      #gallery {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+        padding: 16px;
+        max-width: 1440px;
+        margin: 0 auto 32px;
+      }
+      @media (max-width: 1440px) {
+        #gallery {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 1200px) {
+        #gallery {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 900px) {
+        #gallery {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        #gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      .card {
+        background: #161616;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      }
+      .card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        background: #222;
+      }
+      .card .meta {
+        padding: 12px 14px 16px;
+        font-size: 0.95rem;
+        color: #ddd;
+        word-break: break-word;
+      }
+      .card a {
+        color: #8bd6ff;
+        text-decoration: none;
+      }
+      .card a:hover {
+        text-decoration: underline;
+      }
+      .notice {
+        width: min(980px, calc(100% - 32px));
+        margin: 16px auto;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #1a1a1a;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Vibe Coding Characters 이미지</h1>
+      <p>
+        이 페이지는 루트(`/`)에 배포되었을 때,
+        <code>img_urls.txt</code> 파일에 있는 이미지 URL을 모두 읽어와서
+        보여줍니다.
+      </p>
+    </header>
 
-    try {
-      const response = await fetch("img_urls.txt");
-      if (!response.ok) throw new Error("img_urls.txt를 불러오지 못했습니다.");
-      const text = await response.text();
+    <div class="notice">
+      이미지 파일이 많을 경우 로드에 시간이 걸릴 수 있습니다.
+    </div>
 
-      const sections = [];
-      let currentSection = {
-        title: "전체 이미지",
-        link: "",
-        images: [],
-      };
+    <div id="gallery"></div>
+    <div class="notice" id="status">이미지를 불러오는 중입니다...</div>
 
-      text.split(/\r?\n/).forEach((rawLine) => {
-        const line = rawLine.trim();
-        if (!line) return;
+    <script>
+      function escapeHtml(str) {
+        return String(str).replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[m],
+        );
+      }
 
-        // 섹션 헤더 파싱: # 제목 | 링크
-        if (line.startsWith("#")) {
+      async function loadGallery() {
+        const status = document.getElementById("status");
+        const gallery = document.getElementById("gallery");
+
+        try {
+          const response = await fetch("img_urls.txt");
+          if (!response.ok)
+            throw new Error("img_urls.txt를 불러오지 못했습니다.");
+          const text = await response.text();
+
+          const sections = [];
+          let currentSection = {
+            title: "전체 이미지",
+            link: "",
+            images: [],
+          };
+
+          text.split(/\r?\n/).forEach((rawLine) => {
+            const line = rawLine.trim();
+            if (!line) return;
+
+            if (line.startsWith("#")) {
+              if (
+                currentSection.images.length ||
+                currentSection.title !== "전체 이미지"
+              ) {
+                sections.push(currentSection);
+              }
+
+              const headerContent = line.replace(/^#\s*/, "").trim();
+              const separatorIndex = headerContent.indexOf("|");
+
+              let title = headerContent;
+              let link = "";
+
+              if (separatorIndex >= 0) {
+                title = headerContent.slice(0, separatorIndex).trim();
+                link = headerContent.slice(separatorIndex + 1).trim();
+              }
+
+              currentSection = {
+                title,
+                link,
+                images: [],
+              };
+              return;
+            }
+
+            const separatorIndex = line.indexOf("|");
+            const url =
+              separatorIndex >= 0 ? line.slice(0, separatorIndex).trim() : line;
+            const imageTitle =
+              separatorIndex >= 0
+                ? line.slice(separatorIndex + 1).trim()
+                : url.split("/").pop();
+
+            currentSection.images.push({
+              url,
+              title: imageTitle,
+            });
+          });
+
           if (
             currentSection.images.length ||
             currentSection.title !== "전체 이미지"
@@ -28,117 +196,81 @@
             sections.push(currentSection);
           }
 
-          const headerContent = line.replace(/^#\s*/, "").trim();
-          const separatorIndex = headerContent.indexOf("|");
-
-          let title = headerContent;
-          let link = "";
-
-          if (separatorIndex >= 0) {
-            title = headerContent.slice(0, separatorIndex).trim();
-            link = headerContent.slice(separatorIndex + 1).trim();
+          if (!sections.length) {
+            status.textContent =
+              "이미지 목록이 비어 있습니다. img_urls.txt 파일을 확인하세요.";
+            return;
           }
 
-          currentSection = {
-            title,
-            link,
-            images: [],
-          };
-          return;
-        }
+          gallery.innerHTML = sections
+            .map(
+              (section) => `
+          <div style="grid-column: 1 / -1; margin-top: 24px;">
+            <div style="
+              display:flex;
+              align-items:center;
+              justify-content:space-between;
+              gap:16px;
+              border-bottom: 2px solid rgba(255,255,255,.2);
+              padding-bottom: 12px;
+              flex-wrap: wrap;
+            ">
+              <h2 style="margin:0; font-size:1.4rem; color:#f5f5f5;">
+                ${escapeHtml(section.title)}
+              </h2>
 
-        // 이미지 줄 파싱: URL | 제목
-        const separatorIndex = line.indexOf("|");
-        const url =
-          separatorIndex >= 0 ? line.slice(0, separatorIndex).trim() : line;
-        const imageTitle =
-          separatorIndex >= 0
-            ? line.slice(separatorIndex + 1).trim()
-            : url.split("/").pop();
-
-        currentSection.images.push({
-          url,
-          title: imageTitle,
-        });
-      });
-
-      if (
-        currentSection.images.length ||
-        currentSection.title !== "전체 이미지"
-      ) {
-        sections.push(currentSection);
-      }
-
-      if (!sections.length) {
-        status.textContent =
-          "이미지 목록이 비어 있습니다. img_urls.txt 파일을 확인하세요.";
-        return;
-      }
-
-      gallery.innerHTML = sections
-        .map(
-          (section) => `
-        <div style="grid-column: 1 / -1; margin-top: 24px;">
-          <div style="
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:16px;
-            border-bottom: 2px solid rgba(255,255,255,.2);
-            padding-bottom: 12px;
-            flex-wrap: wrap;
-          ">
-            <h2 style="margin:0; font-size:1.4rem; color:#f5f5f5;">
-              ${section.title}
-            </h2>
-
-            ${
-              section.link
-                ? `
-                  <a
-                    href="${section.link}"
-                    target="_blank"
-                    rel="noreferrer"
-                    style="
-                      display:inline-block;
-                      padding:10px 14px;
-                      border-radius:10px;
-                      background:#8bd6ff;
-                      color:#111;
-                      font-weight:700;
-                      text-decoration:none;
-                      white-space:nowrap;
-                    "
-                  >
-                    교안 예시 보기
-                  </a>
-                `
-                : ""
-            }
-          </div>
-        </div>
-
-        ${section.images
-          .map(
-            (img) => `
-          <article class="card">
-            <img loading="lazy" src="${img.url}" alt="${img.title}" />
-            <div class="meta">
-              <a href="${img.url}" target="_blank" rel="noreferrer">${img.title}</a>
+              ${
+                section.link
+                  ? `
+                    <a
+                      href="${section.link}"
+                      target="_blank"
+                      rel="noreferrer"
+                      style="
+                        display:inline-block;
+                        padding:10px 14px;
+                        border-radius:10px;
+                        background:#8bd6ff;
+                        color:#111;
+                        font-weight:700;
+                        text-decoration:none;
+                        white-space:nowrap;
+                      "
+                    >
+                      교안 예시 보기
+                    </a>
+                  `
+                  : ""
+              }
             </div>
-          </article>
+          </div>
+
+          ${section.images
+            .map(
+              (img) => `
+            <article class="card">
+              <img loading="lazy" src="${img.url}" alt="${escapeHtml(img.title)}" />
+              <div class="meta">
+                <a href="${img.url}" target="_blank" rel="noreferrer">
+                  ${escapeHtml(img.title)}
+                </a>
+              </div>
+            </article>
+          `,
+            )
+            .join("")}
         `,
-          )
-          .join("")}
-      `,
-        )
-        .join("");
+            )
+            .join("");
 
-      status.remove();
-    } catch (error) {
-      status.textContent = "오류 발생: " + error.message;
-    }
-  }
+          status.remove();
+        } catch (error) {
+          console.error(error);
+          status.textContent = "오류 발생: " + error.message;
+        }
+      }
 
-  loadGallery();
-</script>
+      loadGallery();
+    </script>
+  </body>
+</html>
