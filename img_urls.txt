@@ -40,7 +40,7 @@
   https://vibe-coding-characters.vercel.app/img/history_e/wisdom2.png | 🧠 지혜로운 혁신형 (Wisdom) 2
   https://vibe-coding-characters.vercel.app/img/history_e/wisdom3.png | 🧠 지혜로운 혁신형 (Wisdom) 3
 
-  # 중등 - 역사 (Middle School History)
+  # 중등 - 역사 (Middle School History) | ./examples/history_m3.html
   https://vibe-coding-characters.vercel.app/img/history-m/baekje1.png | ⛵ 백제 교류형 (Baekje) 선정
   https://vibe-coding-characters.vercel.app/img/history-m/baekje2.png | ⛵ 백제 교류형 (Baekje) 2
   https://vibe-coding-characters.vercel.app/img/history-m/baekje3.png | ⛵ 백제 교류형 (Baekje) 3
