@@ -54,7 +54,7 @@
   https://vibe-coding-characters.vercel.app/img/history-m/silla2.png | 👑 신라 상징형 (Silla) 2
   https://vibe-coding-characters.vercel.app/img/history-m/silla3.png | 👑 신라 상징형 (Silla) 3
 
-  # 중등 - 한국 콘텐츠 (Middle School Korean Content)
+  # 중등 - 한국 콘텐츠 (Middle School Korean Content) | ./examples/contents_m3.html
   https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar1.png | 🐰 K-캐릭터 몰입형 (KChar) 선정
   https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar2.png | 🐰 K-캐릭터 몰입형 (KChar) 2
   https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar3.png | 🐰 K-캐릭터 몰입형 (KChar) 3

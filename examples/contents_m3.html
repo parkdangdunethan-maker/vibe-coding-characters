@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내가 생각하는 최고의 K-콘텐츠는?</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* -------------------------------------------------------------
+           [디자인 안전 규칙 & 기본 초기화]
+           ------------------------------------------------------------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            max-width: 100%;
+            overflow-x: hidden; /* 가로 스크롤 무조건 차단 */
+            word-break: keep-all; /* 단어 단위 줄바꿈 */
+            line-height: 1.6;
+            letter-spacing: -0.2px;
+            font-family: 'Gowun Dodum', sans-serif;
+            background-color: #f5f7fa; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* -------------------------------------------------------------
+           [🚨🚨 카드 박스 절대 고정 규칙 - 2단계 구조 완벽 유지]
+           ------------------------------------------------------------- */
+        .app-card {
+            width: 100%;
+            max-width: 420px;
+            height: 580px;                  /* 🚨 모든 화면 동일 고정 */
+            padding: 24px 20px;              /* 🚨 모든 화면 동일 고정 */
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            margin: 0 auto;
+            background: #ffffff;
+            position: relative;              
+            overflow-x: hidden;              /* 🚨 가로 스크롤 무조건 차단 */
+            overflow-y: auto;                /* 🚨 세로 스크롤은 가능하되 스크롤바만 숨김 */
+            scrollbar-width: none;          
+            -ms-overflow-style: none;       
+            display: flex;                  
+            flex-direction: column;
+        }
+
+        .app-card::-webkit-scrollbar {
+            display: none;                  
+            width: 0;
+            height: 0;
+        }
+
+        /* -------------------------------------------------------------
+           [🚨 flex 레이아웃 - 화면별 공통 베이스]
+           ------------------------------------------------------------- */
+        #start-screen, #question-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+            justify-content: flex-start;
+        }
+
+        /* 3단계 신규 화면 - 카드 내부 정중앙 정렬 배치 */
+        #loading-screen, #character-intro {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;          /* 🚨 분석중·인트로는 정중앙 */
+            overflow: hidden;
+        }
+
+        /* 결과 화면은 콘텐츠 분량 관계상 gap: 12px 설정 고수 */
+        #result-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            justify-content: flex-start;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        #result-screen::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* -------------------------------------------------------------
+           [🚨 버튼 뭉개짐 방지 및 메인 스타일]
+           ------------------------------------------------------------- */
+        .main-btn {
+            width: 100%;
+            min-height: 52px;              /* 🚨 height 대신 min-height 사용 */
+            flex-shrink: 0;                /* 🚨 절대 줄어들지 않게 방지 */
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: auto;              /* 🚨 카드 하단에 자연스럽게 정착 */
+            border: none;
+            background-color: #4f46e5;     
+            color: #ffffff;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        
+        .main-btn:hover {
+            background-color: #4338ca;
+        }
+
+        /* -------------------------------------------------------------
+           [기본 컴포넌트 디자인 - 2단계 기반 확장]
+           ------------------------------------------------------------- */
+        .title-area {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .title-area h1 {
+            font-size: 24px;
+            color: #1e293b;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .title-area p {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .back-btn:hover { background-color: #e2e8f0; }
+
+        .progress-area {
+            margin-top: 24px; 
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .progress-text {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: bold;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 16.6%;
+            background-color: #4f46e5;
+            border-radius: 4px;
+            transition: width 0.4s ease-in-out; /* 🚨 진행률 바 트랜지션 인터랙션 반영 */
+        }
+
+        .question-text {
+            font-size: 17px;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 5px 0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; 
+            position: relative;
+        }
+        
+        /* 🚨 선택 카드 ripple 효과 구현을 위한 릴레이티브 상속화 설정 */
+        .option-item {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e5e5e5;
+            cursor: pointer;
+            flex-shrink: 0;
+            background-color: #ffffff;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .option-item input[type="radio"] { display: none; }
+        .option-text { font-size: 14px; color: #334155; user-select: none; z-index: 2; }
+        
+        .option-item.selected {
+            border-color: #4f46e5;
+            background-color: #f5f3ff;
+        }
+        .option-item.selected .option-text {
+            color: #4f46e5;
+            font-weight: bold;
+        }
+
+        /* ⑤ 선택 카드 ripple 원형 확산 이펙트 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(79, 70, 229, 0.15);
+            transform: scale(0);
+            animation: ripple-animation 0.5s linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* -------------------------------------------------------------
+           [3단계 신규 인터랙션 & 애니메이션 정의]
+           ------------------------------------------------------------- */
+        
+        /* 로딩 닷 깜빡임 애니메이션 */
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0% { content: ''; }
+            33% { content: '.'; }
+            66% { content: '..'; }
+            100% { content: '...'; }
+        }
+
+        /* ⑧ 캐릭터 등장 바운스 효과 */
+        .bounce-in {
+            animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ② 최종 캐릭터 idle 흔들림 - wobbleBig */
+        .wobble-big {
+            animation: wobbleBig 1.8s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+        @keyframes wobbleBig {
+            0%, 100% { transform: rotate(-10deg) scale(1); }
+            25%      { transform: rotate(8deg) scale(1.08); }
+            50%      { transform: rotate(-8deg) scale(0.96); }
+            75%      { transform: rotate(10deg) scale(1.08); }
+        }
+
+        /* ③ 실천제안 박스 강조 등장 - scale + glow */
+        .suggestion-box.glow-in {
+            animation: glowIn 0.5s ease-out forwards;
+        }
+        @keyframes glowIn {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 rgba(234, 179, 8, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 12px rgba(234, 179, 8, 0.4); }
+        }
+
+        /* ④ 정보 카드 stagger용 클래스 정의 */
+        .fade-in-item {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+        }
+        .fade-in-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 인트로 텍스트 연출 제어용 클래스 */
+        .fade-text {
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .fade-text.show { opacity: 1; }
+
+        /* -------------------------------------------------------------
+           [결과 화면 내부 컴포넌트 세부 디자인]
+           ------------------------------------------------------------- */
+        .result-title-top {
+            font-size: 14px;
+            font-weight: bold;
+            color: #64748b;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        /* ① 캐릭터 이미지 래퍼 컨테이너 (정착 시 130px 규격 고정) */
+        .char-img-wrap {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 130px;
+        }
+        .char-img-main {
+            max-width: 130px;
+            height: auto;
+            display: block;
+        }
+        .fallback-emoji-box {
+            font-size: 85px;
+            line-height: 1;
+            display: none;
+        }
+        
+        /* ② 유형명 */
+        .result-type-name {
+            font-size: 26px;
+            font-weight: bold;
+            color: #1e293b;
+            text-align: center;
+        }
+        
+        /* ③ 분석 멘트 박스 디자인 스타일 */
+        .analysis-box {
+            width: 100%;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13.5px;
+            color: #334155;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* ④ 어떤 스타일일까 박스 */
+        .style-box {
+            width: 100%;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            color: #475569;
+        }
+
+        /* ⑤ 💡 실천제안 박스 디자인 스타일 */
+        .suggestion-box {
+            width: 100%;
+            background-color: #fefce8; 
+            border: 1.5px dashed #eab308; 
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            color: #713f12;
+        }
+
+        .app-footer {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        
+        <div id="start-screen">
+            <div class="title-area">
+                <h1>🎤 내가 생각하는 최고의<br>K-콘텐츠는?</h1>
+                <p>나는 어떤 K-콘텐츠에 가장 끌릴까요? 아래의 질문에 답하고 나의 K-콘텐츠 취향을 알아보아요!</p>
+            </div>
+            <button type="button" class="main-btn" onclick="startQuiz()">🚀 나의 K-콘텐츠 취향 알아보기</button>
+        </div>
+
+        <div id="question-screen" style="display: none;">
+            <button type="button" id="prev-btn" class="back-btn" onclick="goPrev()">⬅️</button>
+            
+            <div class="progress-area">
+                <span class="progress-text" id="progress-indicator">Q1 / 6</span>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+            </div>
+            
+            <div style="width:100%; margin-top:10px;" id="question-body">
+                <div class="question-text" id="q-text"></div>
+                <div class="options" id="options-container"></div>
+            </div>
+
+            <button type="button" class="main-btn" id="next-submit-btn" onclick="goNext()">다음 질문으로 ➡️</button>
+        </div>
+
+        <div id="loading-screen" style="display: none;">
+            <div style="font-size: 26px; font-weight: bold; color: #1e293b;">
+                분석중<span class="loading-dots"></span>
+            </div>
+        </div>
+
+        <div id="character-intro" style="display: none;">
+            <div id="intro-sub-text" class="fade-text" style="font-size: 18px; color: #64748b; margin-bottom: 4px;">당신은...</div>
+            <div id="intro-main-type" class="fade-text" style="font-size: 28px; font-weight: bold; color: #1e293b; margin-bottom: 20px;"></div>
+            
+            <div id="intro-img-slot" style="width: 300px; display: flex; justify-content: center; align-items: center;">
+                </div>
+        </div>
+
+        <div id="result-screen" style="display: none;">
+            <div class="result-title-top fade-in-item">📊 나의 K-콘텐츠 취향 결과</div>
+            
+            <div class="char-img-wrap fade-in-item">
+                <img id="res-char-img" class="char-img-main wobble-big" src="" alt="캐릭터" onerror="handleImageError()">
+                <div id="res-fallback-emoji" class="fallback-emoji-box wobble-big"></div>
+            </div>
+            
+            <div class="result-type-name fade-in-item" id="res-type"></div>
+            
+            <div class="analysis-box fade-in-item" id="res-analysis"></div>
+            
+            <div class="style-box fade-in-item">
+                <div id="res-style" style="font-weight:bold; margin-bottom:4px;"></div>
+                <div style="font-size:12px; color:#64748b; margin-bottom:4px;">
+                    <strong>추천:</strong> <span id="res-recommend"></span>
+                </div>
+                <div style="font-size:12px; color:#4f46e5; font-weight:bold;" id="res-keywords"></div>
+            </div>
+            
+            <div class="suggestion-box fade-in-item" id="res-suggestion-container">
+                <strong>💡 실천제안:</strong> <span id="res-suggestion"></span>
+            </div>
+
+            <button type="button" class="main-btn" onclick="resetQuiz()">🔄 다시 하기</button>
+        </div>
+
+    </div>
+
+    <div class="app-footer">AI의 도움을 받아 제작된 콘텐츠입니다.</div>
+
+
+    <script>
+        // 2단계 데이터 원본의 무결성 보존 및 동적 구동 처리
+        const QUIZ_DATA = [
+            {
+                q: "Q1. 내가 가장 먼저 소개하고 싶은 K-콘텐츠 공간은?",
+                options: [
+                    "① 냄새만 맡아도 배고픈 길거리 음식 골목 🍢",
+                    "② 사람들의 함성으로 가득한 공연장 🎤",
+                    "③ 드라마 속 장면 같은 감성 거리 🌃",
+                    "④ 캐릭터 굿즈와 게임을 만날 수 있는 공간 🎮"
+                ]
+            },
+            {
+                q: "Q2. 유튜브 알고리즘이 나를 붙잡는 영상은?",
+                options: [
+                    "① 야식 먹방 영상 🍜",
+                    "② 아이돌 무대 영상 ✨",
+                    "③ 밤새 드라마 몰아보기 🎬",
+                    "④ 게임 리뷰와 캐릭터 영상 🎮"
+                ]
+            },
+            {
+                q: "Q3. 내가 더 참기 힘든 것은?",
+                options: [
+                    "① 야식 사진 안 보기 🍗",
+                    "② 챌린지 음악 안 따라 하기 🎧",
+                    "③ 드라마 스포일러 당하기 😭",
+                    "④ 최애 캐릭터 굿즈 놓치기 🎀"
+                ]
+            },
+            {
+                q: "Q4. 친구와 서울 여행을 간다면 나는?",
+                options: [
+                    "① \"여기 유명한 먹거리 거리래!\" 🍡",
+                    "② \"여기 공연이 열리는 곳이래!\" 🎤",
+                    "③ \"여기 드라마 촬영지래!\" 📸",
+                    "④ \"여기 캐릭터 팝업이 열린대!\" 🎮"
+                ]
+            },
+            {
+                q: "Q5. 갑자기 하루 쉬는 날이 생겼다면?",
+                options: [
+                    "① 디저트 카페와 맛집 투어 🍰",
+                    "② 무대 영상과 챌린지 몰아보기 🎵",
+                    "③ 드라마 정주행 🎬",
+                    "④ 웹툰·게임 하루 종일 즐기기 🕹️"
+                ]
+            },
+            {
+                q: "Q6. 더 갖고 싶은 굿즈는?",
+                options: [
+                    "① 유명 맛집 한정 디저트 🍪",
+                    "② 최애 아이돌 응원봉 🎤",
+                    "③ 드라마 포토카드 📷",
+                    "④ 캐릭터 키링 🧸"
+                ]
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           [🚨 절대 변경 금지 - SUGGESTIONS 객체 및 함수 로직 보존]
+           ------------------------------------------------------------- */
+        const SUGGESTIONS = {
+          "K-푸드 탐험형": [
+            "우리 동네 K-푸드 맛집 지도를 직접 만들어 보세요!",
+            "한 주에 하나씩 새로운 한식·디저트를 시도하고 후기를 남겨 보세요!",
+            "K-푸드 먹방 콘텐츠를 친구들과 함께 보고 'BEST 3'를 뽑아 보세요!",
+            "지역별 K-푸드(전주·부산·광장시장)를 비교하는 콘텐츠를 만들어 보세요!",
+            "외국 친구에게 추천할 K-푸드 5선을 영어 메뉴로 정리해 보세요!",
+          ],
+          "K-POP 에너지형": [
+            "최애 아이돌 무대 영상을 보고 댄스 챌린지를 따라 해 보세요!",
+            "친구들과 K-POP 플레이리스트를 공유하는 챌린지를 열어 보세요!",
+            "내가 좋아하는 아이돌의 의상·무대 컨셉을 분석해 정리해 보세요!",
+            "K-POP 콘서트·체험관 영상을 보고 '꼭 가보고 싶은 무대'를 골라 보세요!",
+            "친구들과 무대 영상 리액션 콘텐츠를 만들어 SNS에 공유해 보세요!",
+          ],
+          "K-드라마 감성형": [
+            "최근 본 K-드라마 OST를 모아 나만의 감성 플레이리스트를 만들어 보세요!",
+            "좋아하는 드라마 명대사 5개를 골라 손글씨 카드로 만들어 보세요!",
+            "드라마 촬영지(남산·한강) 중 한 곳을 골라 미니 여행 코스를 짜 보세요!",
+            "친구들과 함께 'K-드라마 정주행 챌린지'에 도전해 보세요!",
+            "드라마 명장면을 골라 짧은 후기·감상문을 SNS에 공유해 보세요!",
+          ],
+          "K-캐릭터 몰입형": [
+            "내가 좋아하는 K-캐릭터를 활용해 굿즈 디자인 아이디어를 그려 보세요!",
+            "주말 하루를 정해 웹툰·게임 정주행 챌린지에 도전해 보세요!",
+            "K-캐릭터 팝업스토어 정보를 정리해 친구와 함께 방문 계획을 세워 보세요!",
+            "내가 좋아하는 게임의 세계관을 친구에게 설명하는 콘텐츠를 만들어 보세요!",
+            "캐릭터 코스튬·페어 행사를 조사해 위시리스트로 정리해 보세요!",
+          ],
+        };
+
+        function getRandomSuggestion(type) {
+          const list = SUGGESTIONS[type];
+          const idx = Math.floor(Math.random() * list.length);
+          return list[idx];
+        }
+
+        // 3단계 연출용 메핑 스태틱 정보 구성 자산
+        const CHARACTER_ASSETS = {
+            "K-푸드 탐험형": {
+                url: "https://vibe-coding-characters.vercel.app/img/kcontent-m/kfood1.png",
+                emoji: "🍜",
+                colors: ["#FFB75E", "#ED8F03"]
+            },
+            "K-POP 에너지형": {
+                url: "https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop1.png",
+                emoji: "🎤",
+                colors: ["#FF0099", "#493240"]
+            },
+            "K-드라마 감성형": {
+                url: "https://vibe-coding-characters.vercel.app/img/kcontent-m/kdrama1.png",
+                emoji: "🎬",
+                colors: ["#7F7FD5", "#86A8E7"]
+            },
+            "K-캐릭터 몰입형": {
+                url: "https://vibe-coding-characters.vercel.app/img/kcontent-m/kchar1.png",
+                emoji: "🎮",
+                colors: ["#42E695", "#3BB2B8"]
+            }
+        };
+
+        let currentIdx = 0; 
+        let userAnswers = new Array(6).fill(null);
+
+        // 퀴즈 기동 처리
+        function startQuiz() {
+            document.getElementById("start-screen").style.display = "none";
+            document.getElementById("question-screen").style.display = "flex";
+            currentIdx = 0;
+            renderQuestion();
+        }
+
+        // 질문 구성 모듈 연동 처리
+        function renderQuestion() {
+            const currentData = QUIZ_DATA[currentIdx];
+            
+            const prevBtn = document.getElementById("prev-btn");
+            prevBtn.style.visibility = (currentIdx === 0) ? "hidden" : "visible";
+
+            document.getElementById("progress-indicator").innerText = `Q${currentIdx + 1} / 6`;
+            document.getElementById("progress-bar").style.width = `${((currentIdx + 1) / 6) * 100}%`;
+            document.getElementById("q-text").innerText = currentData.q;
+
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = ""; 
+
+            currentData.options.forEach((optText, index) => {
+                const optValue = index + 1; 
+
+                const label = document.createElement("label");
+                label.className = "option-item";
+                if (userAnswers[currentIdx] === optValue) {
+                    label.classList.add("selected");
+                }
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = `q${currentIdx + 1}`;
+                radio.value = optValue;
+                if (userAnswers[currentIdx] === optValue) {
+                    radio.checked = true;
+                }
+
+                // ⑤ 선택 카드 ripple 인터랙션 액션 처리 바인딩
+                label.addEventListener('click', function(e) {
+                    const rect = label.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const rippleSpan = document.createElement('span');
+                    rippleSpan.className = 'ripple';
+                    rippleSpan.style.left = `${x}px`;
+                    rippleSpan.style.top = `${y}px`;
+                    label.appendChild(rippleSpan);
+                    
+                    setTimeout(() => { rippleSpan.remove(); }, 500);
+
+                    const allLabels = optionsContainer.getElementsByClassName("option-item");
+                    for(let l of allLabels) { l.classList.remove("selected"); }
+                    label.classList.add("selected");
+                    userAnswers[currentIdx] = optValue;
+                });
+
+                const span = document.createElement("span");
+                span.className = "option-text";
+                span.innerText = optText;
+
+                label.appendChild(radio);
+                label.appendChild(span);
+                optionsContainer.appendChild(label);
+            });
+
+            const mainActionBtn = document.getElementById("next-submit-btn");
+            mainActionBtn.innerText = (currentIdx === 5) ? "📊 나의 K-콘텐츠 취향 알아보기" : "다음 질문으로 ➡️";
+        }
+
+        function goPrev() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
+        function goNext() {
+            if (userAnswers[currentIdx] === null) {
+                alert("답변을 선택해 주세요.");
+                return;
+            }
+            if (currentIdx === 5) {
+                runTimelineSequence(); // 3단계 핵심 타임라인 시퀀스 트리거 전환
+            } else {
+                currentIdx++;
+                renderQuestion();
+            }
+        }
+
+        /* -------------------------------------------------------------
+           [표준 폭죽 함수 세트 - 가이드 명세 그대로 포함]
+           ------------------------------------------------------------- */
+        function safeConfetti(opts) {
+            if (typeof confetti === 'undefined') return;
+            try { confetti(opts); } catch (e) {}
+        }
+
+        function fireEmojiConfetti(emoji, colors) {
+            if (typeof confetti === 'undefined') return;
+            try {
+                const shape = confetti.shapeFromText({ text: emoji, scalar: 4 });
+                const baseOption = {
+                    particleCount: 60, spread: 90, startVelocity: 55, ticks: 250,
+                    shapes: [shape], scalar: 4, colors: colors, gravity: 0.8, drift: 0.1
+                };
+                confetti({ ...baseOption, origin: { x: 0.1, y: 0.9 }, angle: 60 });
+                confetti({ ...baseOption, origin: { x: 0.9, y: 0.9 }, angle: 120 });
+                setTimeout(() => {
+                    confetti({ ...baseOption, particleCount: 40, origin: { x: 0.5, y: 0.8 }, angle: 90, spread: 120 });
+                }, 300);
+            } catch (e) {}
+        }
+
+        /* -------------------------------------------------------------
+           [3단계 핵심 연출 시퀀스 타임라인 스크립팅]
+           ------------------------------------------------------------- */
+        function runTimelineSequence() {
+            // 연산 사전 처리 실행 및 할당
+            const resultData = calculateScoreLogic();
+            const asset = CHARACTER_ASSETS[resultData.finalType];
+
+            // 질문 화면 아웃
+            document.getElementById("question-screen").style.display = "none";
+
+            // 0.0s -> Step 1: 분석 중 로딩 화면 진입
+            const loadingScreen = document.getElementById("loading-screen");
+            loadingScreen.style.display = "flex";
+
+            // 1.5s -> Step 2: 캐릭터 인트로 화면 전환 시점 정밀 구동
+            setTimeout(() => {
+                loadingScreen.style.display = "none";
+                
+                const introScreen = document.getElementById("character-intro");
+                introScreen.style.display = "flex";
+                
+                // 요소 타겟 바인딩 클렌징 및 지정
+                const subTxt = document.getElementById("intro-sub-text");
+                const mainTxt = document.getElementById("intro-main-type");
+                const imgSlot = document.getElementById("intro-img-slot");
+                
+                mainTxt.innerText = resultData.finalType + "!";
+                imgSlot.innerHTML = ""; // 초기화
+
+                // 인트로 전용 거대 캐릭터 엘리먼트 설계 (width: 300px 규칙 준수)
+                const introImg = document.createElement("img");
+                introImg.src = asset.url;
+                introImg.style.width = "300px";
+                introImg.style.height = "auto";
+                introImg.style.maxWidth = "100%";
+                introImg.style.display = "block";
+                introImg.style.opacity = "0"; // 초기 상태 차단
+                introImg.onerror = function() {
+                    // 인트로 시점 로드 에러 시 대체 텍스트형 이모지 드로우 처리
+                    introImg.style.display = "none";
+                    const fallbackEmoji = document.createElement("div");
+                    fallbackEmoji.style.fontSize = "100px";
+                    fallbackEmoji.innerText = asset.emoji;
+                    imgSlot.appendChild(fallbackEmoji);
+                };
+
+                // 1.5s: "당신은..." 페이드인
+                setTimeout(() => { subTxt.classList.add("show"); }, 0);
+                
+                // 1.9s: 유형명 등장 연출
+                setTimeout(() => { mainTxt.classList.add("show"); }, 400);
+
+                // 2.1s: 캐릭터 등장 (바운스 인)
+                setTimeout(() => {
+                    imgSlot.appendChild(introImg);
+                    introImg.classList.add("bounce-in");
+                }, 600);
+
+                // 2.7s: 유형별 축포 발사 연출 시동
+                setTimeout(() => {
+                    fireEmojiConfetti(asset.emoji, asset.colors);
+                }, 1200);
+
+                // 3.5s ~ 4.3s -> Step 3-4: 페이드아웃 후 최종 결과 표출 처리 마감 연동
+                setTimeout(() => {
+                    // 인트로 연출 요소 제거 아웃
+                    introScreen.style.display = "none";
+                    subTxt.classList.remove("show");
+                    mainTxt.classList.remove("show");
+
+                    // 결과 화면 정보 연동 처리 바인딩 기동
+                    bindFinalResultDOM(resultData);
+
+                    // 결과 화면 인
+                    const resScreen = document.getElementById("result-screen");
+                    resScreen.style.display = "flex";
+
+                    // ④ 정보 카드 스태거링 순차 표출 인터랙션 전개 (0.15s 간격)
+                    const fadeItems = resScreen.getElementsByClassName("fade-in-item");
+                    Array.from(fadeItems).forEach((item, itemIdx) => {
+                        setTimeout(() => {
+                            item.classList.add("active");
+                            // 실천제안 란에 도달할 시 특수 강조 효과 체인 연동
+                            if(item.id === "res-suggestion-container") {
+                                item.classList.add("glow-in");
+                            }
+                        }, itemIdx * 150);
+                    });
+
+                }, 2000);
+
+            }, 1500);
+        }
+
+        // 1, 2단계 정밀 점수 가중 연산 로직 보존계
+        function calculateScoreLogic() {
+            let scoreFood = 0, scorePop = 0, scoreDrama = 0, scoreCharacter = 0;
+
+            userAnswers.forEach(val => {
+                if (val === 1) scoreFood++;
+                else if (val === 2) scorePop++;
+                else if (val === 3) scoreDrama++;
+                else if (val === 4) scoreCharacter++;
+            });
+
+            // 동점 우선 처리를 유도하는 고유 연산부 데이터 구축
+            const scoresArr = [
+                { type: "K-푸드 탐험형", score: scoreFood, priority: 1 },
+                { type: "K-POP 에너지형", score: scorePop, priority: 2 },
+                { type: "K-드라마 감성형", score: scoreDrama, priority: 3 },
+                { type: "K-캐릭터 몰입형", score: scoreCharacter, priority: 4 }
+            ];
+
+            // 원본 내 정렬 우선 배치 순서 규칙 정렬
+            scoresArr.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.priority - b.priority;
+            });
+
+            const top1 = scoresArr[0];
+            const top2 = scoresArr[1];
+            const diff = top1.score - top2.score;
+
+            // 우선선택 순위가 일치하는 최종 유형 1개 획득 산출
+            let finalType = top1.type;
+            
+            return { finalType, diff, isTie: (diff === 0) };
+        }
+
+        // 이미지 파일 로드 로직 장해시 Fallback 복구 스크립팅 루틴
+        function handleImageError() {
+            document.getElementById("res-char-img").style.display = "none";
+            document.getElementById("res-fallback-emoji").style.display = "block";
+        }
+
+        // 최종 DOM 바인딩 파이프라인
+        function bindFinalResultDOM(resultData) {
+            const finalType = resultData.finalType;
+            const asset = CHARACTER_ASSETS[finalType];
+
+            // ① 캐릭터 이미지 세팅 리셋 및 바인딩
+            const resImg = document.getElementById("res-char-img");
+            const resFallback = document.getElementById("res-fallback-emoji");
+            resImg.style.display = "block";
+            resFallback.style.display = "none";
+            resImg.src = asset.url;
+            resFallback.innerText = asset.emoji;
+
+            // ② 유형명 바인딩
+            document.getElementById("res-type").innerText = finalType;
+
+            // ③ 3단계 신규: 점수 차이 기반 분석 멘트 박스 도출 제어 인터페이스 적용
+            let analysisText = "";
+            if (resultData.diff >= 3) {
+                analysisText = `당신은 확실한 [${finalType}]이에요!<br>이 성향이 강하게 나타났어요.`;
+            } else if (resultData.diff >= 1) {
+                analysisText = `당신은 [${finalType}] 성향이 가장 두드러지지만,<br>다른 면도 함께 가지고 있어요.`;
+            } else {
+                analysisText = `당신은 여러 매력을 함께 가진 균형형이에요.<br>그중에서도 [${finalType}] 성향이 살짝 더 강해요.`;
+            }
+            document.getElementById("res-analysis").innerHTML = analysisText;
+
+            // ④ 어떤 스타일일까 뼈대 기초 텍스트 래핑 대입
+            let styleText = "", recommendText = "", keywordText = "";
+            if (finalType === "K-푸드 탐험형") {
+                styleText = "맛있는 음식과 시장 분위기를 좋아하는 타입입니다.";
+                recommendText = "먹방, 길거리 음식, 디저트 투어, 광장시장, 전주 한옥마을, 부산 먹거리 거리";
+                keywordText = "#먹방 #한식 #시장 #맛집";
+            } else if (finalType === "K-POP 에너지형") {
+                styleText = "신나는 음악과 화려한 무대 분위기를 좋아하는 타입입니다.";
+                recommendText = "아이돌, 콘서트, 댄스 챌린지, 홍대 공연 거리, K-POP 체험관";
+                keywordText = "#KPOP #댄스 #무대 #에너지";
+            } else if (finalType === "K-드라마 감성형") {
+                styleText = "분위기 있는 장소와 감성적인 이야기를 좋아하는 타입입니다.";
+                recommendText = "드라마, 영화, OST, 한강공원, 남산, 드라마 촬영지";
+                keywordText = "#감성 #드라마 #풍경 #스토리";
+            } else if (finalType === "K-캐릭터 몰입형") {
+                styleText = "웹툰, 게임, 캐릭터처럼 몰입감 있는 콘텐츠를 좋아하는 타입입니다.";
+                recommendText = "웹툰, 게임, 캐릭터 굿즈, 캐릭터 팝업스토어, 게임 박람회";
+                keywordText = "#게임 #웹툰 #캐릭터 #굿즈";
+            }
+
+            document.getElementById("res-style").innerText = "어떤 스타일일까?: " + styleText;
+            document.getElementById("res-recommend").innerText = recommendText;
+            document.getElementById("res-keywords").innerText = keywordText;
+            
+            // ⑤ 실천제안 동적 랜덤화 처리 연동
+            document.getElementById("res-suggestion").innerText = getRandomSuggestion(finalType);
+        }
+
+        // 전체 컨디션 리셋 및 스위칭 초기 인트로 기동 루틴 마감 처리
+        function resetQuiz() {
+            userAnswers.fill(null);
+            currentIdx = 0;
+
+            // 애니메이션 연동 제어 클래스 역소거 일괄 클렌징
+            const resScreen = document.getElementById("result-screen");
+            const fadeItems = resScreen.getElementsByClassName("fade-in-item");
+            Array.from(fadeItems).forEach(item => {
+                item.classList.remove("active");
+                if(item.id === "res-suggestion-container") {
+                    item.classList.remove("glow-in");
+                }
+            });
+
+            resScreen.style.display = "none";
+            document.getElementById("start-screen").style.display = "flex";
+        }
+    </script>
+</body>
+</html>
