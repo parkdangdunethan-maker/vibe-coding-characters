@@ -26,7 +26,7 @@
   https://vibe-coding-characters.vercel.app/img/env-m/tech2.png | 🚀 기술 혁신형 (Tech) 2
   https://vibe-coding-characters.vercel.app/img/env-m/tech3.png | 🚀 기술 혁신형 (Tech) 3
 
-  # 초등 - 역사 (Elementary History)
+  # 초등 - 역사 (Elementary History) | ./examples/history_e3.html
   https://vibe-coding-characters.vercel.app/img/history_e/art.png | 🎨 표현하는 예술형 (Art) 선정
   https://vibe-coding-characters.vercel.app/img/history_e/art2.png | 🎨 표현하는 예술형 (Art) 2
   https://vibe-coding-characters.vercel.app/img/history_e/art3.png | 🎨 표현하는 예술형 (Art) 3
@@ -68,7 +68,7 @@
   https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop2.png | 🎤 K-POP 에너지형 (KPOP) 2
   https://vibe-coding-characters.vercel.app/img/kcontent-m/kpop3.png | 🎤 K-POP 에너지형 (KPOP) 3
 
-  # 초등 - 여행 (Elementary Travel)
+  # 초등 - 여행 (Elementary Travel) | ./examples/travel_e3.html
   https://vibe-coding-characters.vercel.app/img/travel-e/active.png | ⚡ 액티비티 러버형 (Active) 선정
   https://vibe-coding-characters.vercel.app/img/travel-e/active2.png | ⚡ 액티비티 러버형 (Active) 2
   https://vibe-coding-characters.vercel.app/img/travel-e/active3.png | ⚡ 액티비티 러버형 (Active) 3
