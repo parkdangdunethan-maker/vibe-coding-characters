@@ -81,3 +81,6 @@
   https://vibe-coding-characters.vercel.app/img/travel-e/plan.png | 📅 일정 마스터형 (Plan) 선정
   https://vibe-coding-characters.vercel.app/img/travel-e/plan2.png | 📅 일정 마스터형 (Plan) 2
   https://vibe-coding-characters.vercel.app/img/travel-e/plan3.png | 📅 일정 마스터형 (Plan) 3
+
+  # 초등 - 비전보드 (Elementary Vision Board) | ./examples/travel_e3.html
+  https://vibe-coding-characters.vercel.app/img/vision-e/creative1.png | 🖌️ 창작 꿈씨앗 (creative) 1
