@@ -84,14 +84,14 @@
 
   # 초등 - 비전보드 (Elementary Vision Board) | ./examples/travel_e3.html
   https://vibe-coding-characters.vercel.app/img/vision-e/create1.png | 🖌️ 창작 꿈씨앗 (create) 1
-  https://vibe-coding-characters.vercel.app/img/vision-e/create2.png | 🖌️ 창작 꿈씨앗 (create) 2
+  https://vibe-coding-characters.vercel.app/img/vision-e/create2.png | 🖌️ 창작 꿈씨앗 (create) 2 - 현재
   https://vibe-coding-characters.vercel.app/img/vision-e/create3.png | 🖌️ 창작 꿈씨앗 (create) 3
   https://vibe-coding-characters.vercel.app/img/vision-e/together1.png | 🤝 함께 꿈씨앗 (together) 1
-  https://vibe-coding-characters.vercel.app/img/vision-e/together2.png | 🤝 함께 꿈씨앗 (together) 2
+  https://vibe-coding-characters.vercel.app/img/vision-e/together2.png | 🤝 함께 꿈씨앗 (together) 2 - 현재
   https://vibe-coding-characters.vercel.app/img/vision-e/together3.png | 🤝 함께 꿈씨앗 (together) 3
   https://vibe-coding-characters.vercel.app/img/vision-e/invention1.png | 💡 발명 꿈씨앗 (invention) 1
-  https://vibe-coding-characters.vercel.app/img/vision-e/invention2.png | 💡 발명 꿈씨앗 (invention) 2
+  https://vibe-coding-characters.vercel.app/img/vision-e/invention2.png | 💡 발명 꿈씨앗 (invention) 2 - 현재
   https://vibe-coding-characters.vercel.app/img/vision-e/invention3.png | 💡 발명 꿈씨앗 (invention) 3
   https://vibe-coding-characters.vercel.app/img/vision-e/explore1.png | 🚀 탐험 꿈씨앗 (explore) 1
   https://vibe-coding-characters.vercel.app/img/vision-e/explore2.png | 🚀 탐험 꿈씨앗 (explore) 2
-  https://vibe-coding-characters.vercel.app/img/vision-e/explore3.png | 🚀 탐험 꿈씨앗 (explore) 3
+  https://vibe-coding-characters.vercel.app/img/vision-e/explore3.png | 🚀 탐험 꿈씨앗 (explore) 3 - 현재
