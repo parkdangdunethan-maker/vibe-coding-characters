@@ -128,12 +128,12 @@
   https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy1.png | 🪄 판타지 스타일 (fantasy) 1
   https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy2.png | 🪄 판타지 스타일 (fantasy) 2
   https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy3.png | 🪄 판타지 스타일 (fantasy) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-m/happy1.png | 🏫 일상 스타일 (happy) 1
-  https://vibe-coding-characters.vercel.app/img/drawing-m/happy2.png | 🏫 일상 스타일 (happy) 2
-  https://vibe-coding-characters.vercel.app/img/drawing-m/happy3.png | 🏫 일상 스타일 (happy) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-m/humor1.png | 🔎 미스터리 스타일 (humor) 1
-  https://vibe-coding-characters.vercel.app/img/drawing-m/humor2.png | 🔎 미스터리 스타일 (humor) 2
-  https://vibe-coding-characters.vercel.app/img/drawing-m/humor3.png | 🔎 미스터리 스타일 (humor) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-m/idea1.png | 💩 코믹 스타일 (idea) 1
-  https://vibe-coding-characters.vercel.app/img/drawing-m/idea2.png | 💩 코믹 스타일 (idea) 2
-  https://vibe-coding-characters.vercel.app/img/drawing-m/idea3.png | 💩 코믹 스타일 (idea) 3
+  https://vibe-coding-characters.vercel.app/img/drawing-m/daily1.png | 🏫 일상 스타일 (daily) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-m/daily2.png | 🏫 일상 스타일 (daily) 2
+  https://vibe-coding-characters.vercel.app/img/drawing-m/daily3.png | 🏫 일상 스타일 (daily) 3
+  https://vibe-coding-characters.vercel.app/img/drawing-m/mystery1.png | 🔎 미스터리 스타일 (mystery) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-m/mystery2.png | 🔎 미스터리 스타일 (mystery) 2
+  https://vibe-coding-characters.vercel.app/img/drawing-m/mystery3.png | 🔎 미스터리 스타일 (mystery) 3
+  https://vibe-coding-characters.vercel.app/img/drawing-m/comic1.png | 💩 코믹 스타일 (comic) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-m/comic2.png | 💩 코믹 스타일 (comic) 2
+  https://vibe-coding-characters.vercel.app/img/drawing-m/comic3.png | 💩 코믹 스타일 (comic) 3
