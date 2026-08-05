@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- 모바일 안전 1: viewport meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍀나의 꿈씨앗 유형 알아보기</title>
+
+  <!-- Google Fonts 허용: Gowun Dodum -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+  <style>
+    /* 기본 리셋 및 typography */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #FDE8EE; /* 연한 핑크 테마 배경 */
+      font-family: 'Gowun Dodum', sans-serif;
+      word-break: keep-all;
+      line-height: 1.6;
+      letter-spacing: -0.2px;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    /* 🚨🚨 카드 박스 절대 고정 규칙 (모든 화면 동일 적용) */
+    .app-card {
+      width: 100%;
+      max-width: 420px;
+      height: 580px;                 /* 🚨 모든 화면 동일 */
+      padding: 24px 20px;             /* 🚨 모든 화면 동일 */
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      margin: 0 auto;
+      background: #ffffff;
+      position: relative;             /* 좌상단 이전 버튼 위치 기준 */
+      overflow-x: hidden;             /* 🚨 가로 스크롤 무조건 차단 */
+      overflow-y: auto;               /* 🚨 세로 스크롤 가능하되 스크롤바 숨김 */
+      scrollbar-width: none;          /* Firefox: 스크롤바 숨김 */
+      -ms-overflow-style: none;       /* IE/Edge */
+      display: flex;                 /* 내부 화면 정렬용 */
+      flex-direction: column;
+    }
+
+    .app-card::-webkit-scrollbar {
+      display: none;                  /* Chrome / Safari / Edge: 스크롤바 숨김 */
+      width: 0;
+      height: 0;
+    }
+
+    /* 🚨 버튼 뭉개짐 방지 & 메인 버튼 규칙 */
+    .main-btn {
+      width: 100%;
+      min-height: 52px;              /* 🚨 height 대신 min-height 사용 */
+      flex-shrink: 0;                /* 🚨 절대 줄어들지 않게 */
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: auto;              /* 🚨 카드 하단에 자연스럽게 정착 */
+      background-color: #ff6b81;
+      color: #ffffff;
+      border: none;
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-btn:hover {
+      background-color: #ff4757; /* ⑦ 버튼 hover: scale 금지, 색상 변경만 */
+    }
+
+    /* 🚨 이전 버튼 (⬅️) 규칙 */
+    .back-btn {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #eee;
+      background: #f8f9fa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      z-index: 10;
+      transition: background-color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #e9ecef;
+    }
+
+    /* 화면 베이스 클래스 */
+    .screen {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      justify-content: flex-start;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    /* 슬라이드 애니메이션 */
+    .slide-enter {
+      animation: slideIn 0.25s forwards;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* === 1. 시작 화면 === */
+    #start-screen {
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    #start-screen h1 {
+      font-size: 24px;
+      color: #2d3436;
+      margin-bottom: 16px;
+      margin-top: 10px;
+    }
+
+    #start-screen p {
+      font-size: 15px;
+      color: #636e72;
+      line-height: 1.6;
+    }
+
+    .start-graphic {
+      font-size: 72px;
+      margin: 20px 0;
+    }
+
+    /* === 2. 질문 화면 === */
+    .progress-container {
+      margin-top: 24px;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      font-weight: bold;
+      color: #ff6b81;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background-color: #f1f2f6;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    /* ⑥ 진행률 바 transition 0.4s */
+    .progress-bar-fill {
+      height: 100%;
+      width: 20%;
+      background-color: #ff6b81;
+      transition: width 0.4s ease;
+    }
+
+    .question-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: #2f3542;
+      margin-top: 4px;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ⑤ 선택 카드 ripple 효과 적용용 스타일 */
+    .option-card {
+      position: relative;
+      overflow: hidden;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 2px solid #e5e5e5;
+      background-color: #ffffff;
+      cursor: pointer;
+      font-size: 14px;
+      color: #333;
+      flex-shrink: 0;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .option-card input[type="radio"] {
+      margin-right: 10px;
+      accent-color: #ff6b81;
+      pointer-events: none;
+    }
+
+    .option-card:hover {
+      background-color: #fff0f3;
+      border-color: #ffb8c6;
+    }
+
+    .option-card.selected {
+      background-color: #fff0f3;
+      border-color: #ff6b81;
+      font-weight: bold;
+    }
+
+    /* Ripple 원형 확산 에니메이션 */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 107, 129, 0.3);
+      transform: scale(0);
+      animation: ripple-effect 0.5s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple-effect {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* === 3단계 신규 화면 CSS (정중앙 배치) === */
+    #loading-screen, #character-intro {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Step 1 분석중 문구 & 점 깜빡임 */
+    .loading-text {
+      font-size: 26px;
+      font-weight: bold;
+      color: #2d3436;
+    }
+
+    .dots::after {
+      content: '.';
+      animation: dotsAnim 1.5s infinite steps(4, jump-none);
+    }
+
+    @keyframes dotsAnim {
+      0% { content: '.'; }
+      33% { content: '..'; }
+      66% { content: '...'; }
+    }
+
+    /* Step 2 캐릭터 인트로 요소 스타일 */
+    .intro-sub {
+      font-size: 18px;
+      color: #636e72;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .intro-sub.fade-in {
+      opacity: 1;
+    }
+
+    .intro-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2d3436;
+      margin-top: 6px;
+      opacity: 0;
+      transform: translateY(-15px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .intro-title.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ⑧ 캐릭터 등장 시 바운스 애니메이션 */
+    .intro-img-container {
+      margin-top: 16px;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), width 0.8s ease, height 0.8s ease;
+    }
+
+    .intro-img-container.bounce-in {
+      opacity: 1;
+      transform: scale(1.0);
+    }
+
+    /* Step 3 축소 및 상단 이동 시 동작 */
+    .intro-img-container.shrink-to-top {
+      width: 130px;
+      height: 130px;
+      transform: translateY(-40px);
+    }
+
+    .character-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* === 3. 결과 화면 === */
+    #result-screen {
+      gap: 12px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-top: 10px;
+    }
+
+    #result-screen::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    .result-card-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ff6b81;
+      text-align: center;
+    }
+
+    /* ① 캐릭터 이미지 정착 영역 & ② wobbleBig 흔들림 애니메이션 */
+    .result-char-area {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-char-img {
+      max-width: 130px;
+      max-height: 130px;
+      object-fit: contain;
+      animation: wobbleBig 1.8s ease-in-out infinite;
+    }
+
+    @keyframes wobbleBig {
+      0%, 100% { transform: rotate(-10deg) scale(1); }
+      25%      { transform: rotate(8deg) scale(1.08); }
+      50%      { transform: rotate(-8deg) scale(0.96); }
+      75%      { transform: rotate(10deg) scale(1.08); }
+    }
+
+    /* 이모지 Fallback 표시용 */
+    .fallback-emoji {
+      font-size: 80px;
+      line-height: 1;
+      text-align: center;
+      animation: wobbleBig 1.8s ease-in-out infinite;
+    }
+
+    /* ② 유형명 (28px bold) */
+    .type-title {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      color: #2d3436;
+    }
+
+    /* ③ 분석 멘트 박스 ⭐ (3단계 신규) */
+    .analysis-box {
+      background-color: #f1f3f5;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      color: #343a40;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* ④ 정보 카드 stagger 애니메이션 대상 */
+    .stagger-card {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .stagger-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ④ 어떤 성향일까? (회색 박스) */
+    .tendency-box {
+      background-color: #f8f9fa;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      color: #495057;
+    }
+
+    /* ⑥ 좋아할 수 있는 활동 (베이지·핑크 톤 박스 — 👀 아이콘) */
+    .activity-box {
+      background-color: #fdf6f0;
+      padding: 12px 14px;
+      border-left: 4px solid #b08968;
+      border-radius: 0 8px 8px 0;
+      font-size: 13.5px;
+      color: #4a3b32;
+    }
+
+    /* ⑦ 강점 키워드 (해시태그 칩 — # 기호 포함) */
+    .keywords-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .keyword-chip {
+      background-color: #ffeaa7;
+      color: #d63031;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* ⑤ 💡 실천제안 박스 강조 등장 (scale 0.9->1.0 + glow 0.5s) */
+    .suggestion-box {
+      background-color: #fff9db;
+      border: 1px solid #ffe066;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      color: #5c940d;
+      font-weight: 500;
+      transform: scale(0.9);
+      opacity: 0;
+      transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .suggestion-box.glow-show {
+      transform: scale(1.0);
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(255, 224, 102, 0.8);
+    }
+
+    /* 푸터 */
+    footer {
+      margin-top: 16px;
+      text-align: center;
+      color: #888;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 앱 고정 카드 뼈대 (420 x 580 고정) -->
+  <div class="app-card">
+    
+    <!-- 이전 버튼 (⬅️): Q1에서는 visibility:hidden -->
+    <button type="button" id="back-btn" class="back-btn" onclick="goToPrevQuestion()" style="display: none;">⬅️</button>
+
+    <!-- ==================== 1. 시작 화면 ==================== -->
+    <div id="start-screen" class="screen">
+      <div class="title-area">
+        <h1>🍀나의 꿈씨앗 유형 알아보기</h1>
+        <div class="start-graphic">🌱</div>
+        <p>나는 어떤 것을 좋아하고 관심을 보일까요?<br>아래의 질문에 답하고 나의 꿈씨앗 유형을 알아보아요!</p>
+      </div>
+      <!-- 🚨 메인 버튼 라벨: 🍀나의 꿈씨앗 유형 알아보기 -->
+      <button type="button" class="main-btn" onclick="startQuiz()">🍀나의 꿈씨앗 유형 알아보기</button>
+    </div>
+
+    <!-- ==================== 2. 질문 화면 ==================== -->
+    <div id="question-screen" class="screen" style="display: none;">
+      <!-- 진행률 바 -->
+      <div class="progress-container">
+        <div class="progress-text" id="progress-text">Q1 / 5</div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- 질문 텍스트 -->
+      <div class="question-title" id="question-title">Q1. 질문 텍스트</div>
+
+      <!-- 선택지 컨테이너 -->
+      <div class="options-container" id="options-container">
+        <!-- JS로 동적 렌더링 -->
+      </div>
+
+      <!-- 🚨 메인 버튼 라벨: 다음 질문으로 ➡️ / 마지막 질문: 📊 나의 꿈씨앗 유형 알아보기 -->
+      <button type="button" class="main-btn" id="next-btn" onclick="goToNextQuestion()">다음 질문으로 ➡️</button>
+    </div>
+
+    <!-- ==================== 3단계 신규: Step 1 로딩 화면 ==================== -->
+    <div id="loading-screen" style="display: none;">
+      <div class="loading-text">분석중<span class="dots"></span></div>
+    </div>
+
+    <!-- ==================== 3단계 신규: Step 2 캐릭터 인트로 화면 ==================== -->
+    <div id="character-intro" style="display: none;">
+      <div class="intro-sub" id="intro-sub">당신은...</div>
+      <div class="intro-title" id="intro-title">탐험 꿈씨앗!</div>
+      <div class="intro-img-container" id="intro-img-container">
+        <img id="intro-char-img" class="character-img" src="" alt="캐릭터" onerror="handleImageError(this)">
+      </div>
+    </div>
+
+    <!-- ==================== 4. 결과 화면 ==================== -->
+    <div id="result-screen" class="screen" style="display: none;">
+      <!-- 상단 타이틀 -->
+      <div class="result-card-title">📊 나의 꿈씨앗 유형 결과</div>
+
+      <!-- ① 캐릭터 이미지 (130px, idle wobbleBig 흔들림) / 이미지 실패시 이모지 대체 -->
+      <div id="result-char-area" class="result-char-area">
+        <!-- 동적 삽입 -->
+      </div>
+
+      <!-- ② 유형명 (28px bold) -->
+      <div id="result-title" class="type-title"></div>
+
+      <!-- ③ 분석 멘트 박스 ⭐ 3단계 신규 -->
+      <div id="analysis-box" class="analysis-box stagger-card"></div>
+
+      <!-- ④ 어떤 성향일까? (회색 박스) -->
+      <div id="result-tendency" class="tendency-box stagger-card"></div>
+
+      <!-- 좋아할 수 있는 활동 (베이지·핑크 톤 박스 — 👀 아이콘) -->
+      <div id="result-activity" class="activity-box stagger-card"></div>
+
+      <!-- 강점 키워드 (해시태그 칩 — # 기호 포함) -->
+      <div id="result-keywords" class="keywords-container stagger-card"></div>
+
+      <!-- ⑤ 💡 실천제안 (강조 박스 — 노란/연두 배경 + 테두리) -->
+      <div id="result-suggestion" class="suggestion-box"></div>
+
+      <!-- ⑥ 🚨 메인 버튼 라벨: 🔄 다시 하기 -->
+      <button type="button" class="main-btn" onclick="resetQuiz()">🔄 다시 하기</button>
+    </div>
+
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    <p>AI의 도움을 받아 제작된 콘텐츠입니다.</p>
+  </footer>
+
+  <!-- 외부 라이브러리: canvas-confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    /*
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [외부 라이브러리 - 폭죽 함수 표준 선언]
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    */
+    function safeConfetti(opts) {
+      if (typeof confetti === 'undefined') return;
+      try { confetti(opts); } catch (e) {}
+    }
+
+    function fireEmojiConfetti(emoji, colors) {
+      if (typeof confetti === 'undefined') return;
+      try {
+        const shape = confetti.shapeFromText({ text: emoji, scalar: 4 });
+        const baseOption = {
+          particleCount: 60, spread: 90, startVelocity: 55, ticks: 250,
+          shapes: [shape], scalar: 4, colors: colors, gravity: 0.8, drift: 0.1
+        };
+        confetti({ ...baseOption, origin: { x: 0.1, y: 0.9 }, angle: 60 });
+        confetti({ ...baseOption, origin: { x: 0.9, y: 0.9 }, angle: 120 });
+        setTimeout(() => {
+          confetti({ ...baseOption, particleCount: 40, origin: { x: 0.5, y: 0.8 }, angle: 90, spread: 120 });
+        }, 300);
+      } catch (e) {}
+    }
+
+    /*
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [🚨 절대 변경 금지 — 1·2단계 데이터 및 질문 규칙 보존]
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    */
+    const QUESTIONS_DATA = [
+      {
+        id: "q1",
+        title: "Q1. 자유 시간이 생기면 가장 하고 싶은 것은?",
+        options: [
+          { label: "① 그림 그리기•이야기 만들기", value: "창작 꿈씨앗" },
+          { label: "② 친구들과 함께할 놀이 준비", value: "함께 꿈씨앗" },
+          { label: "③ 블록 재료로 새로운 것 만들기", value: "발명 꿈씨앗" },
+          { label: "④ 새로운 장소•신기한 정보 찾기", value: "탐험 꿈씨앗" }
+        ]
+      },
+      {
+        id: "q2",
+        title: "Q2. 학교 행사에서 맡고 싶은 역할은?",
+        options: [
+          { label: "① 포스터 무대 멋지게 꾸미기", value: "창작 꿈씨앗" },
+          { label: "② 친구들 의견 모으고 참여 돕기", value: "함께 꿈씨앗" },
+          { label: "③ 행사에 필요한 소품•도구 만들기", value: "발명 꿈씨앗" },
+          { label: "④ 새로운 체험거리•장소 찾기", value: "탐험 꿈씨앗" }
+        ]
+      },
+      {
+        id: "q3",
+        title: "Q3. AI에게 한 가지를 요청한다면?",
+        options: [
+          { label: "① 나만의 그림이나 이야기를 만들어줘", value: "창작 꿈씨앗" },
+          { label: "② 모두가 함께할 활동 추천해줘", value: "함께 꿈씨앗" },
+          { label: "③ 생활의 불편을 해결하는 도구 생각해줘", value: "발명 꿈씨앗" },
+          { label: "④ 신기한 장소나 새로운 정보 보여줘", value: "탐험 꿈씨앗" }
+        ]
+      },
+      {
+        id: "q4",
+        title: "Q4. 가장 뿌듯한 순간은?",
+        options: [
+          { label: "① 내 생각을 작품으로 완성했을 때", value: "창작 꿈씨앗" },
+          { label: "② 친구들과 힘을 합쳐 좋은 결과를 만들 때", value: "함께 꿈씨앗" },
+          { label: "③ 내가 만든 것이 잘 작동할 때", value: "발명 꿈씨앗" },
+          { label: "④ 몰랐던 사실을 새롭게 발견했을 때", value: "탐험 꿈씨앗" }
+        ]
+      },
+      {
+        id: "q5",
+        title: "Q5. 가장 참여하고 싶은 프로젝트는?",
+        options: [
+          { label: "① 그림•공연이 있는 전시회 만들기", value: "창작 꿈씨앗" },
+          { label: "② 친구들과 즐거운 캠페인 만들기", value: "함께 꿈씨앗" },
+          { label: "③ 생활을 편리하게 해주는 발명품 만들기", value: "발명 꿈씨앗" },
+          { label: "④ 우주•자연•우리 동네 탐험하고 조사하기", value: "탐험 꿈씨앗" }
+        ]
+      }
+    ];
+
+    const DATA = {
+      "창작 꿈씨앗": {
+        emoji: "🖌️",
+        imgUrl: "https://vibe-coding-characters.vercel.app/img/vision-e/create2.png",
+        colors: ["#FFB75E", "#ED8F03"],
+        tendency: "어떤 성향일까?: 새로운 생각을 떠올리고 그림•이야기•공연으로 표현하는 활동을 좋아해요.",
+        activity: "👀 좋아할 수 있는 활동 : 그림•이야기 만들기, 작품 꾸미기, 무대 준비하기",
+        keywords: ["#상상", "#표현", "#아이디어"]
+      },
+      "함께 꿈씨앗": {
+        emoji: "🤝",
+        imgUrl: "https://vibe-coding-characters.vercel.app/img/vision-e/together2.png",
+        colors: ["#FF0099", "#493240"],
+        tendency: "어떤 성향일까?: 친구들과 의견을 나누고 함께 즐거운 결과를 만드는 활동을 좋아해요.",
+        activity: "👀 좋아할 수 있는 활동 : 모둠 활동, 캠페인, 친구 돕기",
+        keywords: ["#협력", "#소통", "#배려"]
+      },
+      "발명 꿈씨앗": {
+        emoji: "💡",
+        imgUrl: "https://vibe-coding-characters.vercel.app/img/vision-e/invention2.png",
+        colors: ["#7F7FD5", "#86A8E7"],
+        tendency: "어떤 성향일까?: 직접 만들고 고치며 새로운 해결 방법을 찾는 활동을 좋아해요.",
+        activity: "👀 좋아할 수 있는 활동 : 조립, 실험, 새 도구 만들기",
+        keywords: ["#만들기", "#도전", "#문제해결"]
+      },
+      "탐험 꿈씨앗": {
+        emoji: "🚀",
+        imgUrl: "https://vibe-coding-characters.vercel.app/img/vision-e/explore3.png",
+        colors: ["#42E695", "#3BB2B8"],
+        tendency: "어떤 성향일까?: 새로운 장소나 정보를 발견하고 직접 경험하는 활동을 좋아해요.",
+        activity: "👀 좋아할 수 있는 활동 : 자연 관찰, 여행, 박물관 탐방",
+        keywords: ["#호기심", "#발견", "#경험"]
+      }
+    };
+
+    const SUGGESTIONS = {
+      "창작 꿈씨앗": [
+        "미래에 해보고 싶은 일을 잡지 표지처럼 꾸며 보세요!",
+        "우리 반이나 가족을 위한 새로운 캐릭터를 만들어 보세요!",
+        "내가 좋아하는 장소를 배경으로 짧은 연극 이야기를 만들어 보세요!",
+        "좋아하는 노래를 들으며 떠오른 장면을 그림으로 표현해 보세요!",
+        "내가 꿈꾸는 미래의 모습을 그림으로 그려 보세요!",
+      ],
+      "함께 꿈씨앗": [
+        "친구의 이야기를 끝까지 듣고 좋은 점을 한 가지 말해 주세요!",
+        "우리 반을 더 즐겁게 만드는 작은 캠페인을 계획해 보세요!",
+        "친구와 의견이 다를 때 사용할 수 있는 따뜻한 대화 문장을 만들어 보세요!",
+        "도움이 필요한 친구나 가족을 위해 내가 할 수 있는 일을 실천해 보세요!",
+        "여러 사람과 힘을 합쳐 문제를 해결했던 경험을 글이나 그림으로 정리해 보세요!"
+      ],
+      "발명 꿈씨앗": [
+        "생활하면서 불편했던 점 한 가지를 찾아 해결 아이디어를 그려 보세요!",
+        "좋아하는 발명품 하나를 골라 좋은 점과 아쉬운 점을 찾아보세요!",
+        "AI에게 생활 속 문제의 해결 방법을 물어보고 내 아이디어와 비교해 보세요!",
+        "내가 만들고 싶은 발명품의 이름과 사용 방법을 정해 보세요!",
+        "버려지는 물건을 활용해 새로운 용도의 물건을 만들어 보세요!"
+      ],
+      "탐험 꿈씨앗": [
+        "박물관·과학관·도서관 중 가 보고 싶은 곳의 전시를 찾아보세요!",
+        "학교나 집 주변에서 처음 보는 식물이나 사물을 찾아 관찰해 보세요!",
+        "관심 있는 나라 하나를 골라 음식·문화·자연환경을 조사해 보세요!",
+        "궁금한 질문 하나를 정하고 책이나 인터넷에서 답을 찾아보세요!",
+        "하늘이나 나무를 관찰하고 어제와 달라진 점을 찾아보세요!"
+      ],
+    };
+
+    function getRandomSuggestion(type) {
+      const list = SUGGESTIONS[type];
+      const idx = Math.floor(Math.random() * list.length);
+      return list[idx];
+    }
+
+    /*
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [애플리케이션 상태 및 화면 전환 제어]
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    */
+    let currentQuestionIndex = 0;
+    const userAnswers = {};
+    let isImageLoadFailed = false;
+
+    function startQuiz() {
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('question-screen').style.display = 'flex';
+      document.getElementById('back-btn').style.display = 'flex';
+      currentQuestionIndex = 0;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const qData = QUESTIONS_DATA[currentQuestionIndex];
+      const qScreen = document.getElementById('question-screen');
+
+      qScreen.classList.remove('slide-enter');
+      void qScreen.offsetWidth;
+      qScreen.classList.add('slide-enter');
+
+      const backBtn = document.getElementById('back-btn');
+      if (currentQuestionIndex === 0) {
+        backBtn.style.visibility = 'hidden';
+      } else {
+        backBtn.style.visibility = 'visible';
+      }
+
+      document.getElementById('progress-text').innerText = `Q${currentQuestionIndex + 1} / ${QUESTIONS_DATA.length}`;
+      document.getElementById('progress-bar-fill').style.width = `${((currentQuestionIndex + 1) / QUESTIONS_DATA.length) * 100}%`;
+
+      document.getElementById('question-title').innerText = qData.title;
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      qData.options.forEach(opt => {
+        const isChecked = userAnswers[qData.id] === opt.value;
+        const card = document.createElement('div');
+        card.className = `option-card ${isChecked ? 'selected' : ''}`;
+        
+        card.innerHTML = `
+          <input type="radio" name="${qData.id}" value="${opt.value}" ${isChecked ? 'checked' : ''}>
+          <span>${opt.label}</span>
+        `;
+
+        // ⑤ 선택 카드 ripple 인터랙션 처리 (클릭 좌표 원형 확산 0.5s)
+        card.addEventListener('click', (e) => {
+          const rect = card.getBoundingClientRect();
+          const circle = document.createElement('span');
+          const diameter = Math.max(rect.width, rect.height);
+          const radius = diameter / 2;
+
+          circle.style.width = circle.style.height = `${diameter}px`;
+          circle.style.left = `${e.clientX - rect.left - radius}px`;
+          circle.style.top = `${e.clientY - rect.top - radius}px`;
+          circle.classList.add('ripple');
+
+          const ripple = card.getElementsByClassName('ripple')[0];
+          if (ripple) ripple.remove();
+          card.appendChild(circle);
+
+          document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          const radio = card.querySelector('input');
+          radio.checked = true;
+          userAnswers[qData.id] = opt.value;
+        });
+
+        container.appendChild(card);
+      });
+
+      const nextBtn = document.getElementById('next-btn');
+      if (currentQuestionIndex === QUESTIONS_DATA.length - 1) {
+        nextBtn.innerText = "📊 나의 꿈씨앗 유형 알아보기";
+      } else {
+        nextBtn.innerText = "다음 질문으로 ➡️";
+      }
+    }
+
+    function goToNextQuestion() {
+      const qData = QUESTIONS_DATA[currentQuestionIndex];
+      const selectedRadio = document.querySelector(`input[name="${qData.id}"]:checked`);
+
+      if (!selectedRadio) {
+        alert("답변을 선택해 주세요.");
+        return;
+      }
+
+      userAnswers[qData.id] = selectedRadio.value;
+
+      if (currentQuestionIndex < QUESTIONS_DATA.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        startSequence(); // 3단계 결과 등장 연출 시퀀스 시작
+      }
+    }
+
+    function goToPrevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion();
+      }
+    }
+
+    // 이미지 로드 실패 시 Fallback 처리
+    function handleImageError(imgElem) {
+      isImageLoadFailed = true;
+      imgElem.style.display = 'none';
+    }
+
+    /*
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     [3단계 결과 화면 등장 연출 시퀀스 타임라인]
+     0.0s Step 1 로딩 화면 표시 ("분석중...")
+     1.5s Step 2 캐릭터 인트로
+     2.1s 캐릭터 등장 (300px, 바운스)
+     2.7s 폭죽 발사 🎉
+     3.5s Step 3 페이드 아웃 + 축소 상단 이동
+     4.3s Step 4 최종 결과 화면 완성
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    */
+    function startSequence() {
+      // 질문 화면 & 이전 버튼 숨기기
+      document.getElementById('question-screen').style.display = 'none';
+      document.getElementById('back-btn').style.display = 'none';
+
+      // 1. 점수 계산
+      const scores = { "창작 꿈씨앗": 0, "함께 꿈씨앗": 0, "발명 꿈씨앗": 0, "탐험 꿈씨앗": 0 };
+      for (const qId in userAnswers) {
+        const type = userAnswers[qId];
+        if (scores[type] !== undefined) scores[type] += 1;
+      }
+
+      // 점수 내림차순 정렬 (차이 계산용)
+      const sortedTypes = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+      const topScore = scores[sortedTypes[0]];
+      const secondScore = scores[sortedTypes[1]];
+      const scoreDiff = topScore - secondScore;
+
+      // 동점 처리
+      const topCandidates = sortedTypes.filter(t => scores[t] === topScore);
+      const isTie = topCandidates.length > 1;
+      const finalIndex = Math.floor(Math.random() * topCandidates.length);
+      const finalType = topCandidates[finalIndex];
+      const typeInfo = DATA[finalType];
+
+      isImageLoadFailed = false;
+
+      // [Step 1] 분석 중 로딩 — 1.5초
+      const loadingScreen = document.getElementById('loading-screen');
+      loadingScreen.style.display = 'flex';
+
+      setTimeout(() => {
+        // [Step 2] 캐릭터 인트로 — 약 2초
+        loadingScreen.style.display = 'none';
+
+        const introScreen = document.getElementById('character-intro');
+        introScreen.style.display = 'flex';
+
+        const introSub = document.getElementById('intro-sub');
+        const introTitle = document.getElementById('intro-title');
+        const imgContainer = document.getElementById('intro-img-container');
+        const introImg = document.getElementById('intro-char-img');
+
+        // 요소 상태 리셋
+        introSub.classList.remove('fade-in');
+        introTitle.classList.remove('show');
+        imgContainer.classList.remove('bounce-in', 'shrink-to-top');
+        introImg.style.display = 'block';
+        introImg.src = typeInfo.imgUrl;
+
+        introTitle.innerText = `${finalType}!`;
+
+        // 1.5s: "당신은..." 페이드 인
+        setTimeout(() => introSub.classList.add('fade-in'), 50);
+
+        // 1.9s: 유형명 등장 (0.4s 후)
+        setTimeout(() => introTitle.classList.add('show'), 400);
+
+        // 2.1s: 캐릭터 등장 (300px, 0.6s 바운스)
+        setTimeout(() => {
+          imgContainer.classList.add('bounce-in');
+        }, 600);
+
+        // 2.7s: 폭죽 발사 🎉 (0.6s 후)
+        setTimeout(() => {
+          fireEmojiConfetti(typeInfo.emoji, typeInfo.colors);
+        }, 1200);
+
+        // 3.5s: [Step 3] 페이드 아웃 + 상단 이동
+        setTimeout(() => {
+          introSub.classList.remove('fade-in');
+          imgContainer.classList.add('shrink-to-top');
+
+          // [Step 4] 최종 결과 화면 페이드 인 준비
+          setTimeout(() => {
+            introScreen.style.display = 'none';
+            renderFinalResult(finalType, typeInfo, scoreDiff, isTie);
+          }, 800);
+
+        }, 2000);
+
+      }, 1500);
+    }
+
+    // [Step 4] 최종 결과 화면 렌더링
+    function renderFinalResult(finalType, typeInfo, scoreDiff, isTie) {
+      const resultScreen = document.getElementById('result-screen');
+      resultScreen.style.display = 'flex';
+
+      // ① 캐릭터 이미지 정착 및 Fallback 처리
+      const charArea = document.getElementById('result-char-area');
+      charArea.innerHTML = '';
+
+      if (isImageLoadFailed) {
+        charArea.innerHTML = `<div class="fallback-emoji">${typeInfo.emoji}</div>`;
+      } else {
+        const img = document.createElement('img');
+        img.src = typeInfo.imgUrl;
+        img.className = 'result-char-img';
+        img.onerror = () => {
+          charArea.innerHTML = `<div class="fallback-emoji">${typeInfo.emoji}</div>`;
+        };
+        charArea.appendChild(img);
+      }
+
+      // ② 유형명
+      document.getElementById('result-title').innerText = finalType;
+
+      // ③ 분석 멘트 박스 ⭐ (1·2위 점수 차이별 멘트 적용)
+      const analysisBox = document.getElementById('analysis-box');
+      if (isTie) {
+        analysisBox.innerHTML = `당신은 여러 매력을 함께 가진 균형형이에요.<br>그중에서도 <strong>[${finalType}]</strong> 성향이 살짝 더 강해요.`;
+      } else if (scoreDiff >= 3) {
+        analysisBox.innerHTML = `당신은 확실한 <strong>[${finalType}]</strong>이에요!<br>이 성향이 강하게 나타났어요.`;
+      } else {
+        analysisBox.innerHTML = `당신은 <strong>[${finalType}]</strong> 성향이 가장 두드러지지만,<br>다른 면도 함께 가지고 있어요.`;
+      }
+
+      // ④ 어떤 성향일까? & 활동
+      document.getElementById('result-tendency').innerText = typeInfo.tendency;
+      document.getElementById('result-activity').innerText = typeInfo.activity;
+
+      // 강점 키워드 해시태그 칩 (4개 모두 출력)
+      const keywordsContainer = document.getElementById('result-keywords');
+      keywordsContainer.innerHTML = '';
+      typeInfo.keywords.forEach(kw => {
+        const span = document.createElement('span');
+        span.className = 'keyword-chip';
+        span.innerText = kw;
+        keywordsContainer.appendChild(span);
+      });
+
+      // 💡 실천제안 (getRandomSuggestion 호출)
+      const suggestionBox = document.getElementById('result-suggestion');
+      suggestionBox.classList.remove('glow-show');
+      const suggestionText = getRandomSuggestion(finalType);
+      suggestionBox.innerText = `💡 실천제안: ${suggestionText}`;
+
+      // ④ 정보 카드 Stagger 효과 (0.15s 간격 fade-in)
+      const staggerCards = document.querySelectorAll('.stagger-card');
+      staggerCards.forEach((card, idx) => {
+        card.classList.remove('show');
+        setTimeout(() => card.classList.add('show'), idx * 150);
+      });
+
+      // ③ 💡 실천제안 박스 강조 등장 (scale 0.9->1.0 + glow, 0.5s)
+      setTimeout(() => {
+        suggestionBox.classList.add('glow-show');
+      }, staggerCards.length * 150 + 100);
+    }
+
+    // [🔄 다시 하기] 초기화
+    function resetQuiz() {
+      for (const key in userAnswers) {
+        delete userAnswers[key];
+      }
+      currentQuestionIndex = 0;
+
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('start-screen').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
