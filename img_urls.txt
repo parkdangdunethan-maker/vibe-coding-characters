@@ -97,7 +97,7 @@
   https://vibe-coding-characters.vercel.app/img/vision-e/explore3.png | 🚀 탐험 꿈씨앗 (explore) 3 - 현재
 
   # 중등 - 비전보드 (Middle School Vision Board) | ./examples/vision_middle_level3.html
-  https://vibe-coding-characters.vercel.app/img/vision-m/creative1.jpeg | 🖌️ 창의·기획형 (creative) 1 - 현재
+  https://vibe-coding-characters.vercel.app/img/vision-m/creative1.jpeg | 🖌️ 창의·기획형 (creative) 1
   https://vibe-coding-characters.vercel.app/img/vision-m/creative2.jpeg | 🖌️ 창의·기획형 (creative) 2
   https://vibe-coding-characters.vercel.app/img/vision-m/creative3.png | 🖌️ 창의·기획형 (creative) 3
   https://vibe-coding-characters.vercel.app/img/vision-m/communicate1.png | 🤝 협업·소통형 (communicate) 1
@@ -107,33 +107,33 @@
   https://vibe-coding-characters.vercel.app/img/vision-m/explore2.png | 💡 탐구·분석형 (explore) 2
   https://vibe-coding-characters.vercel.app/img/vision-m/explore3.png | 💡 탐구·분석형 (explore) 3
   https://vibe-coding-characters.vercel.app/img/vision-m/challenge1.png | 🚀 실행·도전형(challenge) 1
-  https://vibe-coding-characters.vercel.app/img/vision-m/challenge2.jpeg | 🚀 실행·도전형(challenge) 2 - 현재
+  https://vibe-coding-characters.vercel.app/img/vision-m/challenge2.jpeg | 🚀 실행·도전형(challenge) 2
   https://vibe-coding-characters.vercel.app/img/vision-m/challenge3.jpeg | 🚀 실행·도전형(challenge) 3
 
   # 초등 - 아트드로잉 (Elementary Art Drawing) | ./examples/vision_ele_level3.html
   https://vibe-coding-characters.vercel.app/img/drawing-e/hero1.png | 😎 영웅형 캐릭터 (hero) 1
-  https://vibe-coding-characters.vercel.app/img/drawing-e/hero2.png | 😎 영웅형 캐릭터 (hero) 2
+  https://vibe-coding-characters.vercel.app/img/drawing-e/hero2.png | 😎 영웅형 캐릭터 (hero) 2 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-e/hero3.png | 😎 영웅형 캐릭터 (hero) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-e/happy1.png | 🥰 행복형 캐릭터 (happy) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-e/happy1.png | 🥰 행복형 캐릭터 (happy) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-e/happy2.png | 🥰 행복형 캐릭터 (happy) 2
   https://vibe-coding-characters.vercel.app/img/drawing-e/happy3.png | 🥰 행복형 캐릭터 (happy) 3
   https://vibe-coding-characters.vercel.app/img/drawing-e/humor1.png | 😆 유머형 캐릭터 (humor) 1
-  https://vibe-coding-characters.vercel.app/img/drawing-e/humor2.png | 😆 유머형 캐릭터 (humor) 2
+  https://vibe-coding-characters.vercel.app/img/drawing-e/humor2.png | 😆 유머형 캐릭터 (humor) 2 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-e/humor3.png | 😆 유머형 캐릭터 (humor) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-e/idea1.png | 🧐 아이디어형 캐릭터 (idea) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-e/idea1.png | 🧐 아이디어형 캐릭터 (idea) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-e/idea2.png | 🧐 아이디어형 캐릭터 (idea) 2
   https://vibe-coding-characters.vercel.app/img/drawing-e/idea3.png | 🧐 아이디어형 캐릭터 (idea) 3
 
   # 중등 - 아트드로잉 (Middle School Art Drawing) | ./examples/vision_ele_level3.html
-  https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy1.png | 🪄 판타지 스타일 (fantasy) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy1.png | 🪄 판타지 스타일 (fantasy) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy2.png | 🪄 판타지 스타일 (fantasy) 2
   https://vibe-coding-characters.vercel.app/img/drawing-m/fantasy3.png | 🪄 판타지 스타일 (fantasy) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-m/daily1.png | 🏫 일상 스타일 (daily) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-m/daily1.png | 🏫 일상 스타일 (daily) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-m/daily2.png | 🏫 일상 스타일 (daily) 2
   https://vibe-coding-characters.vercel.app/img/drawing-m/daily3.png | 🏫 일상 스타일 (daily) 3
   https://vibe-coding-characters.vercel.app/img/drawing-m/mystery1.png | 🔎 미스터리 스타일 (mystery) 1
-  https://vibe-coding-characters.vercel.app/img/drawing-m/mystery2.png | 🔎 미스터리 스타일 (mystery) 2
+  https://vibe-coding-characters.vercel.app/img/drawing-m/mystery2.png | 🔎 미스터리 스타일 (mystery) 2 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-m/mystery3.png | 🔎 미스터리 스타일 (mystery) 3
-  https://vibe-coding-characters.vercel.app/img/drawing-m/comic1.png | 💩 코믹 스타일 (comic) 1
+  https://vibe-coding-characters.vercel.app/img/drawing-m/comic1.png | 💩 코믹 스타일 (comic) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/drawing-m/comic2.png | 💩 코믹 스타일 (comic) 2
   https://vibe-coding-characters.vercel.app/img/drawing-m/comic3.png | 💩 코믹 스타일 (comic) 3
