@@ -97,16 +97,16 @@
   https://vibe-coding-characters.vercel.app/img/vision-e/explore3.png | 🚀 탐험 꿈씨앗 (explore) 3 - 현재
 
   # 중등 - 비전보드 (Middle School Vision Board) | ./examples/vision_middle_level3.html
-  https://vibe-coding-characters.vercel.app/img/vision-m/creative1.jpeg | 🖌️ 창의·기획형 (creative) 1
+  https://vibe-coding-characters.vercel.app/img/vision-m/creative1.jpeg | 🖌️ 창의·기획형 (creative) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/vision-m/creative2.jpeg | 🖌️ 창의·기획형 (creative) 2
   https://vibe-coding-characters.vercel.app/img/vision-m/creative3.png | 🖌️ 창의·기획형 (creative) 3
   https://vibe-coding-characters.vercel.app/img/vision-m/communicate1.png | 🤝 협업·소통형 (communicate) 1
-  https://vibe-coding-characters.vercel.app/img/vision-m/communicate2.png | 🤝 협업·소통형 (communicate) 2
-  https://vibe-coding-characters.vercel.app/img/vision-m/communicate3.png | 🤝 협업·소통형 (communicate) 3 - 현재
+  https://vibe-coding-characters.vercel.app/img/vision-m/communicate2.png | 🤝 협업·소통형 (communicate) 2 - 현재
+  https://vibe-coding-characters.vercel.app/img/vision-m/communicate3.png | 🤝 협업·소통형 (communicate) 3
   https://vibe-coding-characters.vercel.app/img/vision-m/explore1.png | 💡 탐구·분석형 (explore) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/vision-m/explore2.png | 💡 탐구·분석형 (explore) 2
   https://vibe-coding-characters.vercel.app/img/vision-m/explore3.png | 💡 탐구·분석형 (explore) 3
-  https://vibe-coding-characters.vercel.app/img/vision-m/challenge1.png | 🚀 실행·도전형(challenge) 1
+  https://vibe-coding-characters.vercel.app/img/vision-m/challenge1.png | 🚀 실행·도전형(challenge) 1 - 현재
   https://vibe-coding-characters.vercel.app/img/vision-m/challenge2.jpeg | 🚀 실행·도전형(challenge) 2
   https://vibe-coding-characters.vercel.app/img/vision-m/challenge3.jpeg | 🚀 실행·도전형(challenge) 3
 
